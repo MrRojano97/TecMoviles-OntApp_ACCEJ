@@ -31,7 +31,7 @@ _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios
 * **Elias Avendaño** - *Desarrollador*
 * **Camilo Villalobos** - *Desarrollador*
 * **Ariel Valenzuela** - *Desarrollador*
-* **Cristobal Muñoz ** - *Desarrollador*
+* **Cristobal Muñoz** - *Desarrollador*
 * **Jesus Morris** - *Desarrollador*
 
 ## Información de Asignatura 📚
