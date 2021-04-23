@@ -20,7 +20,7 @@ _notas adicionales sobre como hacer deploy_
 
 ## Gestion de Desarrollo 📌
 
-* [Tablero Trello] (https://trello.com/b/xbKbnf5y/proyecto-1) - Tablero trello para la gestion de tareas.
+* [Tablero Trello](https://trello.com/b/xbKbnf5y/proyecto-1) - Tablero trello para la gestion de tareas.
 
 ## Autores ✒️
 
