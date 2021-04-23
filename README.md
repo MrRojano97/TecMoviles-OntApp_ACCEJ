@@ -10,8 +10,6 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 
 _Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
 
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
-
 ## Despliegue 📦
 
 _notas adicionales sobre como hacer deploy_
@@ -22,11 +20,9 @@ _notas adicionales sobre como hacer deploy_
 
 ## Gestion de Desarrollo 📌
 
-* [Tablero Trello] (https://trello.com/b/xbKbnf5y/proyecto-1) - Tablero trello para la gestion de tareas.
+* [Tablero Trello](https://trello.com/b/xbKbnf5y/proyecto-1) - Tablero trello para la gestion de tareas.
 
 ## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
 * **Elias Avendaño** - *Desarrollador*
 * **Camilo Villalobos** - *Desarrollador*
@@ -36,9 +32,6 @@ _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios
 
 ## Información de Asignatura 📚
 
+* Universidad de Talca
 * Tecnologías Móviles
-* * **Rodrigo Pavez** - *Profesor*
-
-
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
+* **Rodrigo Pavez** - *Profesor*
