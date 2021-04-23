@@ -37,8 +37,4 @@ _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios
 ## Información de Asignatura 📚
 
 * Tecnologías Móviles
-* * **Rodrigo Pavez** - *Profesor*
-
-
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
+* **Rodrigo Pavez** - *Profesor*
