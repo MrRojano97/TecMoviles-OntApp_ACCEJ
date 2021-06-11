@@ -36,7 +36,29 @@ const styles = StyleSheet.create({
       color:"#00a680",
       textTransform:"uppercase",
       marginTop:10
+    },
+    objectViewBody:{
+      flex:1,
+      backgroundColor:"#fff"
+    },
+    objectTitle:{
+      fontSize:20,
+      fontWeight:"bold"
+    },
+    objectDescription:{
+      marginTop:5,
+      color:"grey"
+    },
+    objectInfo:{
+      margin:15,
+      marginTop:25
+    },
+    objectInfoTitle:{
+      fontSize:20,
+      fontWeight:"bold",
+      marginBottom:10
     }
+
 });
 
 export default styles
