@@ -27,7 +27,7 @@ export const NavigatorStack = () => {
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
-        </Stack.Navigator>/
+        </Stack.Navigator>
       </NavigationContainer>
     )
 }

@@ -1,8 +1,9 @@
 import { TextInput, Button, Text, Snackbar } from 'react-native-paper';
 import * as React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import styles from '../styles/styles';
 import { auth } from '../database/firebase';
+import SocialButton from '../components/SocialButton';
 
 export const LoginScreen = (props) => {
   const [username, setUsername] = React.useState('');
@@ -36,6 +37,7 @@ export const LoginScreen = (props) => {
     }
   }
   return (
+    
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {error == true && (
         <Snackbar
@@ -62,7 +64,32 @@ export const LoginScreen = (props) => {
           }}>
           Login
         </Text>
+        </View>
+
+      
+      {Platform.OS == 'android'? (
+
+      <View style={styles.container}> 
+          <SocialButton 
+            buttonTitle="Iniciar Sesión con Facebook"
+            btnType="facebook"
+            color="#4867aa"
+            backgroundColor="#e6eaf4"
+            onPress={() => {}}
+          />
+          
+          <SocialButton 
+            buttonTitle="Iniciar Sesión con Google"
+            btnType="google"
+            color="#de4d41"
+            backgroundColor="#f5e7ea"
+            onPress={() => {}}
+          />
       </View>
+      ) :null }
+
+
+
       <View
         style={{
           height: '60%',
@@ -91,6 +118,8 @@ export const LoginScreen = (props) => {
           onPress={handleOnSubmit}>
           Ingresar
         </Button>
+
+        
       </View>
     </View>
   );
