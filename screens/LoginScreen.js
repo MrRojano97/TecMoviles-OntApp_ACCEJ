@@ -15,7 +15,6 @@ export const LoginScreen = (props)  => {
   const [infomsg, setInfomsg] = React.useState('');
   const [googleSubmitting, setGoogleSubmitting] = React.useState(false);
   
-
   function validation() {
     if (username == '') {
       setInfomsg('Ingresa un email');
@@ -31,6 +30,7 @@ export const LoginScreen = (props)  => {
   }
   function handleOnSubmit(e) {
     e.preventDefault();
+    console.log(username, password);
     if (validation()) {
       auth
         .signInWithEmailAndPassword(username, password)
@@ -108,14 +108,14 @@ export const LoginScreen = (props)  => {
 
       <View style={styles.container}> 
           <SocialButton 
-            buttonTitle="Iniciar Sesión con Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => {
-              setInfomsg('Error en los datos');
-          setInfo(true);
-            }}
+            //buttonTitle="Iniciar Sesión con Facebook"
+            //btnType="facebook"
+            //color="#4867aa"
+            //backgroundColor="#e6eaf4"
+            //onPress={() => {
+            //  setInfomsg('Aún no implementado');
+            //  setInfo(true);
+            //}}
           />
           
           <SocialButton
@@ -141,7 +141,7 @@ export const LoginScreen = (props)  => {
         <TextInput
           label='Email'
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.nativeEvent.text)}
         />
 
         <TextInput
@@ -149,7 +149,7 @@ export const LoginScreen = (props)  => {
           label='Password'
           secureTextEntry
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.nativeEvent.text)}
         />
 
         <Button
@@ -159,6 +159,17 @@ export const LoginScreen = (props)  => {
           onPress={handleOnSubmit}>
           Ingresar
         </Button>
+
+        <View style={{ height: '30%', justifyContent: 'center' }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '300',
+            alignSelf: 'center'
+          }}>
+          Registrarse
+        </Text>
+        </View>
 
       </View>
     </View>

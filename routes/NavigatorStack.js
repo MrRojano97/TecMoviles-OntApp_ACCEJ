@@ -7,6 +7,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
 import { NuevoObjetoScreen } from '../screens/NuevoObjetoScreen';
 import { ObjetoScreen } from '../screens/ObjetoScreen';
+import { RegisterScreen } from '../screens/RegisterScreen'
 import { RutasScreen } from '../screens/RutasScreen';
 
 /**
@@ -27,6 +28,7 @@ export const NavigatorStack = () => {
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
+          <Stack.Screen name="registro" component={RegisterScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     )
