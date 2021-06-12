@@ -1,24 +1,29 @@
-import { TextInput, Button, Text, Snackbar } from 'react-native-paper';
+import { TextInput, Button, Text, Snackbar} from 'react-native-paper';
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { Alert, Platform, View } from 'react-native';
 import styles from '../styles/styles';
 import { auth } from '../database/firebase';
 import SocialButton from '../components/SocialButton';
 
-export const LoginScreen = (props) => {
+
+import * as Google from 'expo-google-app-auth';
+
+export const LoginScreen = (props)  => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [error, setError] = React.useState(null);
-  const [errormsg, setErrormsg] = React.useState('');
+  const [info, setInfo] = React.useState(null);
+  const [infomsg, setInfomsg] = React.useState('');
+  const [googleSubmitting, setGoogleSubmitting] = React.useState(false);
+  
 
   function validation() {
     if (username == '') {
-      setErrormsg('Ingresa un email');
-      setError(true);
+      setInfomsg('Ingresa un email');
+      setInfo(true);
       return false;
     } else if (password == '') {
-      setErrormsg('Ingresa una contraseña');
-      setError(true);
+      setInfomsg('Ingresa una contraseña');
+      setInfo(true);
       return false;
     } else {
       return true;
@@ -31,27 +36,59 @@ export const LoginScreen = (props) => {
         .signInWithEmailAndPassword(username, password)
         .then(() => props.navigation.navigate('rutas'))
         .catch(() => {
-          setErrormsg('Error en los datos');
-          setError(true);
+          setInfomsg('Error en los datos');
+          setInfo(true);
         });
     }
+  }
+
+  function AuthGoogle(){
+    
+    setGoogleSubmitting(true);
+    const config = {androidClientId: '19539297272-f73vsuptm488qt92lcsrsq0lt7jgolav.apps.googleusercontent.com',
+    scopes: ['profile', 'email']
+    };
+
+    Google
+      .logInAsync(config)
+      .then((result) => {
+        const {type, user} = result;
+
+        if (type=='success') {
+          const {email, name, photoUrl} = user;
+          console.log(email, name);
+          setInfomsg('Sesión con Google iniciada correctamente', 'SUCCESS');
+          setInfo(true);
+          //setTimeout(() => navigation.navigate('Welcome',{}))
+        } else {
+          setInfomsg('El inicio de sesión con Google se ha interrumpido');
+          setInfo(true);
+        }
+        setGoogleSubmitting(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setInfomsg('Ha ocurrido un error, probablemente sea debido a su conexión a Internet');
+        setGoogleSubmitting(false);
+        setInfo(true);
+      })
   }
   return (
     
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      {error == true && (
+      {info == true && (
         <Snackbar
-          visible={error}
-          onDismiss={() => setError(false)}
+          visible={info}
+          onDismiss={() => setInfo(false)}
           action={{
             label: 'X',
 
             onPress: () => {
-              setError(false);
-              console.log('asdadads');
+              setInfo(false);
+              console.log('Mensaje cerrado por el usuario');
             }
           }}>
-          {errormsg}
+          {infomsg}
         </Snackbar>
       )}
 
@@ -75,16 +112,20 @@ export const LoginScreen = (props) => {
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
-            onPress={() => {}}
+            onPress={() => {
+              setInfomsg('Error en los datos');
+          setInfo(true);
+            }}
           />
           
-          <SocialButton 
+          <SocialButton
             buttonTitle="Iniciar Sesión con Google"
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
-            onPress={() => {}}
+            onPress={AuthGoogle}
           />
+          
       </View>
       ) :null }
 
@@ -119,7 +160,6 @@ export const LoginScreen = (props) => {
           Ingresar
         </Button>
 
-        
       </View>
     </View>
   );
