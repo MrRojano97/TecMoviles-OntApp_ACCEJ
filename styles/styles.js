@@ -1,12 +1,12 @@
-import { Dimensions, StyleSheet} from 'react-native';
-
-const ScreenWidth = Dimensions.get("window").width
-const ScreenHeigth = Dimensions.get("window").height
+import {StyleSheet} from 'react-native';
+import dimensions from './dimensions';
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      // height:dimensions.height,
       alignItems: 'center',
+      // alignItems: 'flex-end',
       justifyContent: 'center',
     },
     singlebutton:{
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
       marginBottom:10
     },
     objectImage:{
-      width:ScreenWidth,
+      width:dimensions.width,
       height: 250, 
       marginBottom: 15
     },

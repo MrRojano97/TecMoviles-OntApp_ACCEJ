@@ -56,7 +56,7 @@ export const ObjetoScreen = () => {
           height={100}
         /> */}
         <Image
-          style={styles.objectImage}
+          style={styles.objectImage ,{height:100}}
           source={require("../assets/map.jpg")}
         />
         <View>
@@ -81,18 +81,6 @@ export const ObjetoScreen = () => {
               </ListItem.Title>
             </ListItem.Content>      
           </ListItem>
-          {/* {listInfo.map((item)=>{
-            <ListItem 
-              bottomDivider
-              >
-              <Icon name={item.iconName}/>
-              <ListItem.Content>
-                <ListItem.Title>
-                  {item.text}
-                </ListItem.Title>
-              </ListItem.Content>      
-            </ListItem>
-          })} */}
         </View>
         
       </View>
