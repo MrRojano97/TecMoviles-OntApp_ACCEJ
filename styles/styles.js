@@ -57,8 +57,17 @@ const styles = StyleSheet.create({
       fontSize:20,
       fontWeight:"bold",
       marginBottom:10
-    }
-
+    },
+    container2: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    },
+    imageThumbnail: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 100,
+    },
 });
 
 export default styles
