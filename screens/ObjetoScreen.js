@@ -20,7 +20,7 @@ export const ObjetoScreen = () => {
     "../assets/nes.jpg","../assets/nes2.jpg", "../assets/nes3.jpg"
   ]
   
-  const ScreenWidth = Dimensions.get("window").width
+  
   const TituloObjeto = ({nombre,descripcion}) =>{
     return (
       <View style={{padding:15}}>
@@ -56,7 +56,7 @@ export const ObjetoScreen = () => {
           height={100}
         /> */}
         <Image
-          style={{ width: {ScreenWidth}, height: 100}}
+          style={styles.objectImage}
           source={require("../assets/map.jpg")}
         />
         <View>
@@ -107,7 +107,7 @@ export const ObjetoScreen = () => {
       >
       </CarruselImages> */}
       <Image
-          style={{ width: {ScreenWidth}, height: 250, marginBottom: 15 }}
+          style={styles.objectImage}
           source={require("../assets/nes2.jpg")}
       />
       <TituloObjeto 

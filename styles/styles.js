@@ -1,4 +1,7 @@
-import { StyleSheet} from 'react-native';
+import { Dimensions, StyleSheet} from 'react-native';
+
+const ScreenWidth = Dimensions.get("window").width
+const ScreenHeigth = Dimensions.get("window").height
 
 const styles = StyleSheet.create({
     container: {
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
       fontSize:20,
       fontWeight:"bold",
       marginBottom:10
+    },
+    objectImage:{
+      width:ScreenWidth,
+      height: 250, 
+      marginBottom: 15
     },
     container: {
       position: 'absolute',
