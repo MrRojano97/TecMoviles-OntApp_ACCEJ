@@ -57,8 +57,34 @@ const styles = StyleSheet.create({
       fontSize:20,
       fontWeight:"bold",
       marginBottom:10
+    },
+    container: {
+      position: 'absolute',
+      alignContent: 'flex-end'
+    },
+    button: {
+      right: 10,
+      position: 'absolute', 
+      width: 60,
+      height: 60,
+      borderRadius: 60 / 2,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowRadius: 20,
+      shadowColor: '#6074BF',
+      shadowOpacity: 0.4,
+      shadowOffset: { height:0 , width: 0}
+    },
+    menu:{
+      backgroundColor: '#40AEFF',
+    },
+    second:{
+      right: 15,
+      width: 48,
+      height: 48,
+      borderRadius: 48/2,
+      backgroundColor: '#FFF'
     }
-
 });
 
 export default styles
