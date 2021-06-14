@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     singlebutton:{
-        margin:"2px"
+        margin:2
     },
     textcenter:{
         textAlign:'center',
