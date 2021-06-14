@@ -7,6 +7,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
 import { NuevoObjetoScreen } from '../screens/NuevoObjetoScreen';
 import { ObjetoScreen } from '../screens/ObjetoScreen';
+import { RegisterScreen } from '../screens/RegisterScreen'
 import { RutasScreen } from '../screens/RutasScreen';
 
 /**
@@ -20,14 +21,15 @@ export const NavigatorStack = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="login" component={LoginScreen}/>
           <Stack.Screen name="rutas" component={RutasScreen}/>
+          <Stack.Screen name="login" component={LoginScreen}/>
           <Stack.Screen name="galeria" component={GaleriaScreen}/>
           <Stack.Screen name="mapa" component={MapaScreen}/>
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
-        </Stack.Navigator>/
+          <Stack.Screen name="registro" component={RegisterScreen}/>
+        </Stack.Navigator>
       </NavigationContainer>
     )
 }
