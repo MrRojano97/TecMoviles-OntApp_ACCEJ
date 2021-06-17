@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button, Provider,TextInput , Divider, IconButton } from 'react-native-paper';
 import dimensions from '../../styles/dimensions';
+import themeTextInput from '../../styles/ThemeTextInput';
 
 export const EditScreen = ({editVisible, showEdit, hideEdit,objectJSON}) => {
 
@@ -16,9 +17,24 @@ export const EditScreen = ({editVisible, showEdit, hideEdit,objectJSON}) => {
         <Text style={{fontSize:20, padding:10}}>Editar Objeto</Text>
         <Divider/>
         <View style={{marginTop:10}}>
-          <TextInput style={{marginBottom:10}} TextInput label="Nombre" placeholder={objectJSON.nombre}></TextInput>
-          <TextInput style={{marginBottom:10}} TextInput label="Descripción" placeholder={objectJSON.descripcion}></TextInput>
-          <TextInput TextInput label="Dirección" placeholder={objectJSON.direccion}></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput label="Nombre" 
+            placeholder={objectJSON.nombre}
+            theme={themeTextInput}
+            ></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput label="Descripción"
+            placeholder={objectJSON.descripcion}
+            theme={themeTextInput}
+          ></TextInput>
+          <TextInput 
+          TextInput 
+          label="Dirección" 
+          placeholder={objectJSON.direccion}
+          theme={themeTextInput}
+          ></TextInput>
         </View>
         <View style={{
           width:dimensions.width-20, 

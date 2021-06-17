@@ -22,12 +22,12 @@ export const BarOptions = ({nombreoObjeto="Sin nombre", showEdit, optionVisible,
         height:50,
         flex:1,
         flexDirection:"row",
-        backgroundColor:colors.secondaryColor
+        backgroundColor:colors.primaryColor
         }}>
-        <View style={{width:dimensions.width-50, flexDirection:"row", alignSelf:"center"}}>
+        <View style={{width:dimensions.width-50, alignSelf:"center"}}>
           <Text style={{marginLeft:20, color:colors.white, fontWeight:"bold", fontSize:20}}>{nombreoObjeto}</Text>
         </View>
-        <View style={{flex:1, justifyContent:'flex-end'}}>
+        <View style={{flex:1, justifyContent:'flex-end', alignSelf:"center"}}>
           <Menu
             visible={optionVisible}
             onDismiss={closeMenu}
@@ -36,7 +36,7 @@ export const BarOptions = ({nombreoObjeto="Sin nombre", showEdit, optionVisible,
               icon="dots-vertical"
               // color={Colors.red500}
               color={colors.white}
-              size={20}
+              size={25}
               onPress={handleOpen}
             />
             }>
