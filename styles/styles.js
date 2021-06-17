@@ -1,13 +1,16 @@
-import { StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
+import dimensions from './dimensions';
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      // height:dimensions.height,
       alignItems: 'center',
+      // alignItems: 'flex-end',
       justifyContent: 'center',
     },
     singlebutton:{
-        margin:"2px"
+        margin:2
     },
     textcenter:{
         textAlign:'center',
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
       fontSize:20,
       fontWeight:"bold",
       marginBottom:10
+    },
+    objectImage:{
+      width:dimensions.width,
+      height: 250, 
+      marginBottom: 15
     },
     container: {
       position: 'absolute',
