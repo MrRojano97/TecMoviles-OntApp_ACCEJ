@@ -1,18 +1,20 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import Menu from '../components/Menu';
+import Map from '../components/Map'
 
 export const MapaScreen = () => {
   return (
       <View style={styles.container}>
-          <Menu style={{ bottom: 100 }}/>
+          <Map/>
       </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    alignItems: 'flex-end',
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
   },
 });
