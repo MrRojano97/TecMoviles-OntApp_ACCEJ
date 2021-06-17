@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "OntApp",
+    "slug": "OntApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "example.expo.googlesignin",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "<YOUR_REVERSED_IOS_CLIENT_ID>"
+        }
+      },
+      "googleServicesFile": ""
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF",
+        "package": "example.expo.googlesignin",
+        "googleServicesFile": "./google-services.json"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

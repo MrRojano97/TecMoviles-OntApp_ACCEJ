@@ -8,7 +8,7 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 
 ### Instalación 🔧
 
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
+Para instalar el entorno de desarollo, consultar el archivo de [Install_Env.md](https://)
 
 ## Despliegue 📦
 
