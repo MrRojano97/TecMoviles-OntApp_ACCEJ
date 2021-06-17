@@ -6,9 +6,10 @@ import { GaleriaScreen } from '../screens/GaleriaScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
 import { NuevoObjetoScreen } from '../screens/NuevoObjetoScreen';
-import { ObjetoScreen } from '../screens/ObjetoScreen';
+import { ObjetoScreen } from '../screens/ObjetoScreen/ObjetoScreen';
 import { RegisterScreen } from '../screens/RegisterScreen'
 import { RutasScreen } from '../screens/RutasScreen';
+
 
 /**
  * Componente funcional que contiene las rutas de las vistas, empaquedatas en un navigation container.
@@ -20,7 +21,9 @@ export const NavigatorStack = () => {
     const Stack = createStackNavigator()
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerShown:false,         
+        }}>
           <Stack.Screen name="rutas" component={RutasScreen}/>
           <Stack.Screen name="login" component={LoginScreen}/>
           <Stack.Screen name="galeria" component={GaleriaScreen}/>
