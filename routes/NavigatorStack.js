@@ -21,8 +21,8 @@ export const NavigatorStack = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="login" component={LoginScreen}/>
           <Stack.Screen name="rutas" component={RutasScreen}/>
+          <Stack.Screen name="login" component={LoginScreen}/>
           <Stack.Screen name="galeria" component={GaleriaScreen}/>
           <Stack.Screen name="mapa" component={MapaScreen}/>
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
