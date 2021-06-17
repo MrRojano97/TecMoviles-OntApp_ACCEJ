@@ -15,7 +15,6 @@ export const RutasScreen = ({navigation}) => {
       navigation.navigate(vista)
     }
     return (
-      <div>
         <View style={styles.container}>
           <Text style={styles.textcenter}>
             Momentaneamente, la navegación entre las vistas de la aplicación se hara 
@@ -41,6 +40,5 @@ export const RutasScreen = ({navigation}) => {
             <Button title="Cargando..." onPress={()=> handlePressLogin('cargando')}/>
           </View>
         </View>
-      </div>
     )
 }
