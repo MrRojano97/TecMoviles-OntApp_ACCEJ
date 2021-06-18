@@ -1,10 +1,25 @@
 import React from 'react'
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native'
-import CarruselImages from '../components/CarruselImages'
-import styles from '../styles/styles'
-import  Map from '../components/Map'
+import CarruselImages from '../../components/CarruselImages'
+import styles from '../../styles/styles'
+import  Map from '../../components/Map'
 import { ListItem, Icon } from 'react-native-elements'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { BarOptions } from './BarOptions'
+import dimensions from '../../styles/dimensions'
+import { useState } from 'react'
+import { EditScreen } from './EditScreen'
+
 export const ObjetoScreen = () => {
+  const {top} = useSafeAreaInsets()
+  const [optionVisible, setOptionVisible] = useState(false)
+  const [editVisible, setEditVisible] = useState(false);
+  const showEdit = () => {
+    setOptionVisible(false)
+    setEditVisible(true)
+  }
+  // const showEdit = () => setEditVisible(true);
+  const hideEdit = () => setEditVisible(false);
   const objectJSON = {
     nombre:"Nintendo Nes",
     descripcion:"La Nintendo Nes que he tenido toda mi vida, si se me pierde sufrire.",
@@ -17,10 +32,9 @@ export const ObjetoScreen = () => {
     direccion:"Avenida Siempre Viva N° 742"
   }
   const imagesObject = [
-    "../assets/nes.jpg","../assets/nes2.jpg", "../assets/nes3.jpg"
+    "../../assets/nes.jpg","../../assets/nes2.jpg", "../../assets/nes3.jpg"
   ]
   
-  const ScreenWidth = Dimensions.get("window").width
   const TituloObjeto = ({nombre,descripcion}) =>{
     return (
       <View style={{padding:15}}>
@@ -56,8 +70,8 @@ export const ObjetoScreen = () => {
           height={100}
         /> */}
         <Image
-          style={{ width: {ScreenWidth}, height: 100}}
-          source={require("../assets/map.jpg")}
+          style={{height:100, width:dimensions.width-30, marginBottom:5}}
+          source={require("../../assets/map.jpg")}
         />
         <View>
           <ListItem 
@@ -81,25 +95,25 @@ export const ObjetoScreen = () => {
               </ListItem.Title>
             </ListItem.Content>      
           </ListItem>
-          {/* {listInfo.map((item)=>{
-            <ListItem 
-              bottomDivider
-              >
-              <Icon name={item.iconName}/>
-              <ListItem.Content>
-                <ListItem.Title>
-                  {item.text}
-                </ListItem.Title>
-              </ListItem.Content>      
-            </ListItem>
-          })} */}
         </View>
         
       </View>
     )
   }
   return (
-    <ScrollView vertical style={styles.objectViewBody} >
+    <ScrollView vertical style={styles.objectViewBody, {top:top}} >
+      <EditScreen 
+        editVisible={editVisible} 
+        showEdit={showEdit} 
+        hideEdit={hideEdit}
+        objectJSON={objectJSON}
+        />
+      <BarOptions 
+        nombreoObjeto={objectJSON.nombre} 
+        showEdit={showEdit}
+        optionVisible={optionVisible}
+        setOptionVisible={setOptionVisible}
+        />
       {/* <CarruselImages
         arrayImages={imagesObject}
         height={250}
@@ -107,11 +121,11 @@ export const ObjetoScreen = () => {
       >
       </CarruselImages> */}
       <Image
-          style={{ width: {ScreenWidth}, height: 250, marginBottom: 15 }}
-          source={require("../assets/nes2.jpg")}
+          style={styles.objectImage}
+          source={require("../../assets/nes2.jpg")}
       />
       <TituloObjeto 
-        nombre={objectJSON.nombre}
+        nombre="Descripción"
         descripcion={objectJSON.descripcion}
       />
       <ObjectInfo
@@ -119,7 +133,6 @@ export const ObjetoScreen = () => {
         nombre={objectJSON.nombre}
         direccion={objectJSON.direccion}
       />
-     
     </ScrollView>
   )
 }

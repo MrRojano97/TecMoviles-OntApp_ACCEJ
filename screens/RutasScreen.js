@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styles from '../styles/styles'
 
 /**
@@ -10,12 +11,13 @@ import styles from '../styles/styles'
  * @returns Vista con botones para dirigir la navegacion hacia las vistas
  */
 export const RutasScreen = ({navigation}) => {
+    const {top} = useSafeAreaInsets()
     const handlePressLogin = (vista) =>{
       // nevegar hacia la vista recibida
       navigation.navigate(vista)
     }
     return (
-        <View style={styles.container}>
+        <View style={styles.container, {top:top+20}}>
           <Text style={styles.textcenter}>
             Momentaneamente, la navegación entre las vistas de la aplicación se hara 
             mediante botones. Pulsar el boton de una vista para dirigirse a ella.

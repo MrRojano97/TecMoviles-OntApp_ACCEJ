@@ -106,7 +106,7 @@ export const LoginScreen = (props)  => {
       
       {Platform.OS == 'android'? (
 
-      <View style={styles.container}> 
+      <View > 
           <SocialButton 
             //buttonTitle="Iniciar Sesión con Facebook"
             //btnType="facebook"
