@@ -32,6 +32,9 @@
         "backgroundColor": "#FFFFFF",
         "package": "example.expo.googlesignin",
         "googleServicesFile": "./google-services.json"
+      },
+      "config": {
+          "googleMaps": { "apiKey": "AIzaSyAIRT-WaLCtMrd6kq0yfET4lGV5N5crn3w" }   
       }
     },
     "web": {
