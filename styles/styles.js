@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
       height: 48,
       borderRadius: 48/2,
       backgroundColor: '#FFF'
-    }
     },
     container2: {
       flex: 1,
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     imageThumbnail: {
       justifyContent: 'center',
       alignItems: 'center',
-      height: 100,
+      height: 128,
     },
 });
 
