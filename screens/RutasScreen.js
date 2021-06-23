@@ -41,6 +41,9 @@ export const RutasScreen = ({navigation}) => {
           <View style={styles.singlebutton}>
             <Button title="Cargando..." onPress={()=> handlePressLogin('cargando')}/>
           </View>
+          <View style={styles.singlebutton}>
+            <Button title="Dashboard" onPress={()=> handlePressLogin('dashboard')}/>
+          </View>
         </View>
     )
 }
