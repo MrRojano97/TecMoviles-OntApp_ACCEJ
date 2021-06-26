@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack'
 import React from 'react'
 import { Loading } from '../components/Loading';
+import { DashboardScreen } from '../screens/DashboardScreen';
 import { GaleriaScreen } from '../screens/GaleriaScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
@@ -32,6 +33,7 @@ export const NavigatorStack = () => {
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
           <Stack.Screen name="registro" component={RegisterScreen}/>
+          <Stack.Screen name="dashboard" component={DashboardScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     )
