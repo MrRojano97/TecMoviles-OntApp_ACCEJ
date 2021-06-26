@@ -1,30 +1,79 @@
-import React, {useStyles} from 'react'
-import { Modal, Portal, Text, Button, Provider,TextInput , Divider, IconButton } from 'react-native-paper';
-import {StyleSheet, View,Image } from 'react-native'
+import React, {useState, useStyles} from 'react'
+import { Modal, Portal, Text, Button, Provider,TextInput , Divider, IconButton, Avatar } from 'react-native-paper';
+import {StyleSheet, View,Image,ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import colors from '../styles/colors'
 import { makeStyles } from 'react-native-elements';
 import fontSizes from '../styles/fontSizes';
 import dimensions from '../styles/dimensions';
 import themeTextInput from '../styles/ThemeTextInput';
+import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
+import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
+import { BarOptions } from './ObjetoScreen/BarOptions';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
  * @returns Vista 
  */
-export const NuevoObjetoScreen = () => {
+
+export const NuevoObjetoScreen = ({}) => {
   
+  const [image, setImage] = useState(null);
+  const [audio, setAudio] = useState()
+  const [grabando, setGrabando] = useState(false)
+  const [uriAudio, setUriAudio] = useState()
   const {top} = useSafeAreaInsets()
+  const handleAbrirCamara = async() => {
+    const resultado = await abrirCamara()
+    console.log("Resultado:",resultado)
+    if(!resultado.cancelled){
+      setImage(resultado.uri)
+    }
+  }
+  const handleAbrirGaleria = async() => {
+    const resultado = await abrirGaleria()
+    console.log("Resultado:",resultado)
+    if(!resultado.cancelled){
+      setImage(resultado.uri)
+    }
+  }
+  const handleGrabar = async() => {
+    const grabacion = await comenzarGrabacion()
+    setGrabando(true)
+    setAudio(grabacion)
+  }
+  const handleParaGrabar = async() =>{
+    setGrabando(false)
+    const uri = await pararGrabacion(audio)
+    console.log("URI AUDIO:", uri)
+    setUriAudio(uri)
+  }
+  const handleGuardar = () => {
+    console.log("GUARDANDO OBJETO")
+  }
+  
   return (
-    <View style={{flex:1, top:top}}>
-      <View style={{height:50, backgroundColor:colors.primaryColor,flexDirection:"row"}}>
-          <Text style={{marginLeft:20, 
-            color:colors.white, 
-            fontWeight:"bold", 
-            fontSize:fontSizes.mbig,
-            alignSelf:"center",      
-            }}>Nuevo Objeto</Text>
+    <ScrollView style={{top:top}}>
+      <View style={{
+        height:60,
+        flex:1,
+        flexDirection:"row",
+        backgroundColor:colors.primaryColor
+        }}>
+        <View style={{width:dimensions.width-120, alignSelf:"center"}}>
+          <Text style={{marginLeft:20, color:colors.white, fontWeight:"bold", fontSize:20}}>Nuevo Objeto</Text>
         </View>
+        <View style={{flexDirection:"row",justifyContent:'flex-start', alignSelf:"center",}}>
+        <Button
+            icon="content-save"
+            // icon={<Avatar.icon size={35}/>}
+            color={colors.blue_dark}
+            onPress={handleGuardar}
+            mode="contained"
+            compact={true}
+          >Guardar</Button>     
+        </View>       
+      </View>
       <Divider/>
       <View style={{padding:20}}>
         <View style={{marginTop:20, }}>
@@ -46,23 +95,41 @@ export const NuevoObjetoScreen = () => {
             icon="camera"
             color={colors.secondaryColor}
             size={30}
-            onPress={()=>{}}
+            onPress={handleAbrirCamara}
           />     
           <IconButton
             icon="folder"
             color={colors.secondaryColor}
             size={30}
-            onPress={()=>{}}
+            onPress={handleAbrirGaleria}
           />
         </View>
+        {image && (
+          <View style={{alignItems:"center"}}>
+            <Image source={{ uri: image }} style={{ width: 270, height: 360 }} />
+          </View>
+        )}
         <Text style={{fontSize:fontSizes.medium}}>Audio</Text>
-        <IconButton
-            icon="microphone"
-            color={colors.secondaryColor}
-            size={30}
-            onPress={()=>{}}
-          />     
+        <View style={{flexDirection:"row",}}>
+          <IconButton
+              icon="microphone"
+              color={colors.secondaryColor}
+              size={30}
+              onPress={handleGrabar}
+              disabled={grabando}
+          /> 
+          {
+            grabando && (
+              <IconButton
+              icon="stop-circle-outline"
+              color={"red"}
+              size={30}
+              onPress={handleParaGrabar}
+          /> 
+            )
+          }    
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
