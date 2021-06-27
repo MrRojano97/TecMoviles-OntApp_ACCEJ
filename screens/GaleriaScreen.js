@@ -1,10 +1,19 @@
 import React from 'react'
-import { Button, Text, View } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
+import Menu from '../components/Menu';
 
 export const GaleriaScreen = () => {
     return (
-        <View>
+        <View style={styles.container}>
           <Text>Galeria Screen</Text>
+          <Menu style={{ bottom: 100 }}/>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    alignItems: 'flex-end',
+  },
+});
