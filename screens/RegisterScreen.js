@@ -1,18 +1,16 @@
-import { TextInput, Button, Text, Snackbar} from 'react-native-paper';
+import { TextInput, Button, Text, Snackbar } from 'react-native-paper';
 import * as React from 'react';
 import { Alert, Platform, View } from 'react-native';
-import { auth } from '../database/firebase';
+import { auth } from '../firebase';
 
-export const RegisterScreen = (props)  => {
+export const RegisterScreen = (props) => {
   const [name, setName] = React.useState('');
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [info, setInfo] = React.useState(null);
   const [infomsg, setInfomsg] = React.useState('');
-  
 
   function validation() {
-
     if (username == '') {
       setInfomsg('Ingresa un email');
       setInfo(true);
@@ -43,9 +41,7 @@ export const RegisterScreen = (props)  => {
     }
   }
 
-  
   return (
-    
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {info == true && (
         <Snackbar
@@ -72,7 +68,7 @@ export const RegisterScreen = (props)  => {
           }}>
           Registro
         </Text>
-        </View>
+      </View>
 
       <View
         style={{
@@ -110,7 +106,6 @@ export const RegisterScreen = (props)  => {
           onPress={handleOnSubmit}>
           Registrarse
         </Button>
-
       </View>
     </View>
   );

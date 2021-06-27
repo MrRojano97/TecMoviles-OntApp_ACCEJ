@@ -3,12 +3,13 @@
 const colors = {
 
   white: '#FFFFFF',
+  black:"#000000",
   gray: '#25323D',
   transparent: 'transparent',
   primaryColor: '#3b83BD',
-  secondaryColor: '#123A3D',
+  secondaryColor: '#132A3D',
   blue_ligth: "#7AA5C8",
-  blue_dark: "#2BSF8A"
+  blue_dark: "#2B5F8A"
 
 }
 export default colors;
