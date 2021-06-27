@@ -10,7 +10,7 @@ import themeTextInput from '../styles/ThemeTextInput';
 import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
 import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
 import { BarOptions } from './ObjetoScreen/BarOptions';
-import firebase,{ storage } from '../firebase';
+import firebase from '../firebase';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
