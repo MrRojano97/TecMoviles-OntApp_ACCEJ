@@ -10,6 +10,7 @@ import SocialButton from '../components/SocialButton';
 
 import * as Google from 'expo-google-app-auth';
 import { auth } from '../firebase';
+import { Image } from 'react-native';
 
 export const LoginScreen = (props) => {
   const [username, setUsername] = useState('');
@@ -142,7 +143,7 @@ export const LoginScreen = (props) => {
     );
   };
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       {info == true && (
         <Snackbar
           visible={info}
@@ -160,14 +161,19 @@ export const LoginScreen = (props) => {
       )}
 
       <View style={{ height: '40%', justifyContent: 'center' }}>
-        <Text
+        
+        <Image
+            style={{width:250,resizeMode:'center', marginTop:200}}
+            source={require("../assets/logoApp.png")}
+          />
+        {/* <Text
           style={{
             fontSize: 25,
             fontWeight: '600',
             alignSelf: 'center'
           }}>
           Login
-        </Text>
+        </Text> */}
       </View>
 
       {Platform.OS == 'android' ? (

@@ -28,4 +28,3 @@ export async function pararGrabacion(recording) {
   console.log('Recording stopped and stored at', uri);
   return uri
 }
-
