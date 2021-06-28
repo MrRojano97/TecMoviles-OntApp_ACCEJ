@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import styles from '../styles/styles';
 import BarOptions from './ObjetoScreen/BarOptions';
-import { db } from '../firebase';
+import {db} from '../firebase'
 
 export const DashboardScreen = ({ navigation }) => {
   const [dataSource, setDataSource] = useState([]);

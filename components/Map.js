@@ -6,7 +6,6 @@ import * as Location from 'expo-location';
       
 export default class Map extends React.Component {  
 
-    
     render(){
         return (
             <MapView style={styles.map} 
