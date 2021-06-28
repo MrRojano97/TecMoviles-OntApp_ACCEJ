@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     container2: {
       flex: 1,
       justifyContent: 'center',
-      backgroundColor: 'white',
+      backgroundColor: 'white',     
+      
     },
     imageThumbnail: {
       justifyContent: 'center',

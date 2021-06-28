@@ -26,27 +26,27 @@ export const RutasScreen = ({navigation}) => {
           <View style={styles.singlebutton}>
             <Button title="Mapa" onPress={()=> handlePressLogin('mapa')}/>
           </View>
-          <View style={styles.singlebutton}>
+          {/* <View style={styles.singlebutton}>
             <Button title="Galeria" onPress={()=> handlePressLogin('galeria')}/>
-          </View>
+          </View> */}
           <View style={styles.singlebutton}>
             <Button title="Nuevo Objeto" onPress={()=> handlePressLogin('nuevo')}/>
           </View>
           <View style={styles.singlebutton}>
             <Button title="Login" onPress={()=> handlePressLogin('login')}/>
           </View>
-          <View style={styles.singlebutton}>
+          {/* <View style={styles.singlebutton}>
             <Button title="Objeto" onPress={()=> handlePressLogin('objeto')}/>
-          </View>
+          </View> */}
           <View style={styles.singlebutton}>
             <Button title="Cargando..." onPress={()=> handlePressLogin('cargando')}/>
           </View>
           <View style={styles.singlebutton}>
             <Button title="Dashboard" onPress={()=> handlePressLogin('dashboard')}/>
           </View>
-          <View style={styles.singlebutton}>
+          {/* <View style={styles.singlebutton}>
             <Button title="Camara" onPress={()=> handlePressLogin('camara')}/>
-          </View>
+          </View> */}
         </View>
     )
 }

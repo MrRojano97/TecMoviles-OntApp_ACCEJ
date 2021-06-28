@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
-import { Menu, Alert, TouchableOpacity, SafeAreaView, StyleSheet, View, FlatList, Image, Text } from 'react-native';
+import {
+  Menu,
+  Alert,
+  TouchableOpacity,
+  SafeAreaView,
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  Text
+} from 'react-native';
 import styles from '../styles/styles';
 import BarOptions from './ObjetoScreen/BarOptions';
-import {db} from '../database/firebase'
+import {db} from '../firebase';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const DashboardScreen = ({navigation}) => {
-    const [dataSource, setDataSource] = useState([]);
+export const DashboardScreen = ({ navigation }) => {
+  const [dataSource, setDataSource] = useState([]);
 
-    useState(() => {
-        /*let items = Array.apply(null, Array(60)).map((v, i) => {
+  //obtener el margen superior de cada celular
+  const {top} = useSafeAreaInsets()
+  
+  useState(() => {
+    /*let items = Array.apply(null, Array(60)).map((v, i) => {
             return { id: i, name: 'Item ' + (i+1) , src: 'http://placehold.it/200x200?text=' + (i + 1) };
         });
         items = [
@@ -36,14 +50,15 @@ export const DashboardScreen = ({navigation}) => {
         var list = [];
         const usersCollection = db.collection('Objetos').get().then((data) => {
             data.forEach((doc) => {
-                list.push(doc.data());
-                console.log(doc.data());
+                let obj = doc.data();
+                obj.id = doc.id;
+                list.push(obj);
             });
             setDataSource(list);
         });
     }, []);
     return (
-        <SafeAreaView style={styles.container2}>
+        <SafeAreaView style={styles.container2,{marginTop:top}}>
         <FlatList
           data={dataSource}
           renderItem={({ item }) => (
@@ -52,7 +67,7 @@ export const DashboardScreen = ({navigation}) => {
                             margin: 5, 
                             borderColor: 'gainsboro', 
                             borderWidth: 1 }}>
-                <TouchableOpacity onPress={() => { navigation.navigate('objeto')} }>
+                <TouchableOpacity onPress={() => { navigation.navigate('objeto', { item: item })} }>
                     <Image style={styles.imageThumbnail} source={{ uri: 'http://placehold.it/200x200?text=Item' }} />
                 </TouchableOpacity>
                 <Text style={{ flexDirection: 'column',
@@ -60,7 +75,7 @@ export const DashboardScreen = ({navigation}) => {
                                 flex: 1, 
                                 paddingTop:16, 
                                 marginLeft: 8, 
-                                textAlign: 'left'}}>{ item.name }</Text>
+                                textAlign: 'left'}}>{ item.nombredeobjeto }</Text>
                 <Image style={{ height: 32, 
                                 width: 32, 
                                 position: 'absolute', 

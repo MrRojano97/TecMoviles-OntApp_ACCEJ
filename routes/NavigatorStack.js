@@ -28,14 +28,13 @@ export const NavigatorStack = () => {
         }}>
           <Stack.Screen name="rutas" component={RutasScreen}/>
           <Stack.Screen name="login" component={LoginScreen}/>
-          <Stack.Screen name="galeria" component={GaleriaScreen}/>
+          {/* <Stack.Screen name="galeria" component={GaleriaScreen}/> */}
           <Stack.Screen name="mapa" component={MapaScreen}/>
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
           <Stack.Screen name="registro" component={RegisterScreen}/>
           <Stack.Screen name="dashboard" component={DashboardScreen}/>
-          <Stack.Screen name="camara" component={MediaPicker}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

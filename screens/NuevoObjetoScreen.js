@@ -1,23 +1,29 @@
-import React, {useState, useStyles} from 'react'
-import { Modal, Portal, Text, Button, Provider,TextInput , Divider, IconButton, Avatar } from 'react-native-paper';
-import {StyleSheet, View,Image,ScrollView } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import colors from '../styles/colors'
-import { makeStyles } from 'react-native-elements';
+import React, { useState } from 'react';
+import {
+  Text,
+  Button,
+  TextInput,
+  Divider,
+  IconButton,
+  Paragraph,
+  Dialog
+} from 'react-native-paper';
+import {View,Image,ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import colors from '../styles/colors';
 import fontSizes from '../styles/fontSizes';
 import dimensions from '../styles/dimensions';
 import themeTextInput from '../styles/ThemeTextInput';
 import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
 import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
-import { BarOptions } from './ObjetoScreen/BarOptions';
-import firebase,{ storage } from '../firebase';
+import {db} from '../firebase';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
- * @returns Vista 
+ * @returns Vista
  */
 
-export const NuevoObjetoScreen = ({}) => {
+export const NuevoObjetoScreen = () => {
   
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState()
@@ -28,6 +34,9 @@ export const NuevoObjetoScreen = ({}) => {
   const [segDecena, setSegDecena] = useState(0)
   const [contador, setContador] = useState()
   const [reproduciendo, setReproduciendo] = useState(false)
+  const [nombreObjeto, setnombreObjeto] = useState('');
+  const [descripcionObjeto, setdescripcionObjeto] = useState('');
+  const [visible, setVisible] = React.useState(false);
   const {top} = useSafeAreaInsets()
 
   const handleAbrirCamara = async() => {
@@ -80,6 +89,12 @@ export const NuevoObjetoScreen = ({}) => {
   }
   
   const handleGuardar = () => {
+    console.log(nombreObjeto)
+    console.log(descripcionObjeto)
+    db.collection('Objetos').add({
+      nombredeobjeto: nombreObjeto,
+      descripciondeobjeto: descripcionObjeto
+    });
     console.log("GUARDANDO OBJETO")
     subirImagenFirabase().then(()=>{
       console.log("imagen subida")
@@ -93,6 +108,7 @@ export const NuevoObjetoScreen = ({}) => {
     .catch((err)=>{
       console.log("ERROR SUBIENDO AUDIO",err)
     })
+    setVisible(true);
   }
   const cronometrar = () => {
     let segU=0
@@ -125,6 +141,17 @@ export const NuevoObjetoScreen = ({}) => {
     //PARA AUDIO
   }
   
+  function hideDialog() {
+    props.navigation.navigate('rutas');
+    setVisible(false);
+  }
+  // function agregarObjeto() {
+  //   db.collection('Objetos').add({
+  //     nombredeobjeto: nombreObjeto,
+  //     descripciondeobjeto: descripcionObjeto
+  //   });
+  //   setVisible(true);
+  // }
   return (
     <ScrollView style={{top:top}}>
       <View style={{
@@ -151,27 +178,36 @@ export const NuevoObjetoScreen = ({}) => {
       <View style={{padding:20}}>
         <View style={{marginTop:20, }}>
           <Text style={{fontSize:fontSizes.medium}}>Nombre de objeto</Text>
-          <TextInput style={{marginBottom:10}} TextInput theme={themeTextInput} ></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput 
+            theme={themeTextInput}
+            onChangeText={(e) => setnombreObjeto(e)}/>
           <Text style={{fontSize:fontSizes.medium}}>Descripción</Text>
-          <TextInput style={{marginBottom:10}} TextInput theme={themeTextInput}></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput 
+            theme={themeTextInput}
+            onChangeText={(e) => setdescripcionObjeto(e)}  
+            />
         </View>
         <View style={{marginBottom:10}}>
           <Text style={{fontSize:fontSizes.medium}}>Ubicación</Text>
           <Image
-            style={{height:100, width:dimensions.width-40, marginTop:10}}
-            source={require("../assets/map.jpg")}
+            style={{ height: 100, width: dimensions.width - 40, marginTop: 10 }}
+            source={require('../assets/map.jpg')}
           />
         </View>
-        <Text style={{fontSize:fontSizes.medium}}>Imagen Objeto</Text>
-        <View style={{flexDirection:"row",}}>
+        <Text style={{ fontSize: fontSizes.medium }}>Imagen Objeto</Text>
+        <View style={{ flexDirection: 'row' }}>
           <IconButton
-            icon="camera"
+            icon='camera'
             color={colors.secondaryColor}
             size={30}
             onPress={handleAbrirCamara}
           />     
           <IconButton
-            icon="folder"
+            icon='folder'
             color={colors.secondaryColor}
             size={30}
             onPress={handleAbrirGaleria}
@@ -226,6 +262,14 @@ export const NuevoObjetoScreen = ({}) => {
           </View>
         )}
       </View>
+      {/* <Button onPress={agregarObjeto}>Agregar objeto</Button> */}
+      {visible ? (
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Content>
+            <Paragraph>Objeto Agregado</Paragraph>
+          </Dialog.Content>
+        </Dialog>
+      ) : null}
     </ScrollView>
-  )
-}
+  );
+};

@@ -1,18 +1,19 @@
-import { TextInput, Button, Text, Snackbar } from 'react-native-paper';
-
+import { TextInput, Text, Button, Snackbar, ContainedButton, Colors } from 'react-native-paper';
+import { SocialIcon} from 'react-native-elements';
+import themeTextInput from '../styles/ThemeTextInput';
 import { Alert, Platform, View, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
 import React, { useState, useEffect } from 'react';
-
 import * as LocalAuthentication from 'expo-local-authentication';
-
 import SocialButton from '../components/SocialButton';
-
 import * as Google from 'expo-google-app-auth';
-import { auth } from '../firebase';
+import {auth} from '../firebase';
 import { Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import dimensions from '../styles/dimensions';
 
 export const LoginScreen = (props) => {
+  const {top} = useSafeAreaInsets()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [info, setInfo] = useState(null);
@@ -130,14 +131,15 @@ export const LoginScreen = (props) => {
         <TouchableOpacity
           onPress={
             Platform.OS === 'android' ? showAndroidAlert : scanFingerprint
+            // Platform.OS === 'android' && scanFingerprint
           }>
-          <Button
-            style={{ margin: 20 }}
-            contentStyle={{ height: 50 }}
-            mode='contained'>
-            utilizar huella
+          <Button color='#2B5F8A'
+            icon="fingerprint"
+            style={{ alignSelf: 'center'}}
+            contentStyle={{ height: 50}}
+            mode='outlined'>
+              Ingresar con Huella
           </Button>
-          <Text style={{ justifyContent: 'center' }}>{result}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -160,40 +162,27 @@ export const LoginScreen = (props) => {
         </Snackbar>
       )}
 
-      <View style={{ height: '40%', justifyContent: 'center' }}>
+      <View style={{ height: '42%', justifyContent: 'center'}}>
         
         <Image
-            style={{width:250,resizeMode:'center', marginTop:200}}
-            source={require("../assets/logoApp.png")}
+            style={{marginTop:top,width:dimensions.width,resizeMode:'center',top:top}}
+            source={require("../assets/Ontapp_Top2.png")}
           />
-        {/* <Text
-          style={{
-            fontSize: 25,
-            fontWeight: '600',
-            alignSelf: 'center'
-          }}>
-          Login
-        </Text> */}
       </View>
 
       {Platform.OS == 'android' ? (
         <View>
-          <SocialButton
-          //buttonTitle="Iniciar Sesión con Facebook"
-          //btnType="facebook"
-          //color="#4867aa"
-          //backgroundColor="#e6eaf4"
-          //onPress={() => {
-          //  setInfomsg('Aún no implementado');
-          //  setInfo(true);
-          //}}
+          <SocialButton/>
+          <SocialIcon
+            title={"Iniciar Sesión con Facebook"}
+            button={true}
+            type={"facebook"}
+            onPress={AuthGoogle}    
           />
-
-          <SocialButton
-            buttonTitle='Iniciar Sesión con Google'
-            btnType='google'
-            color='#de4d41'
-            backgroundColor='#f5e7ea'
+          <SocialIcon
+            title={"Iniciar Sesión con Google"}
+            button={true}
+            type={"google"}
             onPress={AuthGoogle}
           />
         </View>
@@ -204,40 +193,40 @@ export const LoginScreen = (props) => {
           height: '60%',
           width: '85%',
           alignSelf: 'center',
-          marginTop: 70
+          marginTop: 20
         }}>
-        <TextInput
-          label='Email'
+        <TextInput theme={themeTextInput}
+          label='Correo Electrónico'
           value={username}
           onChange={(e) => setUsername(e.nativeEvent.text)}
         />
 
-        <TextInput
-          style={{ marginTop: 20 }}
-          label='Password'
+        <TextInput theme={themeTextInput}
+          style={{ marginTop: 10, color: 'blue'}}
+          label='Contraseña'
           secureTextEntry
           value={password}
           onChange={(e) => setPassword(e.nativeEvent.text)}
         />
-        <Sensor />
-        <Button
-          style={{ margin: 20 }}
-          contentStyle={{ height: 50 }}
+
+        <Button color='#3B83BD'
+          style={{ margin: 20}}
+          contentStyle={{ height: 50}}
+          icon="login"
           mode='contained'
           onPress={handleOnSubmit}>
           Ingresar
         </Button>
 
-        <View style={{ height: '30%', justifyContent: 'center' }}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '300',
-              alignSelf: 'center'
-            }}>
-            Registrarse
-          </Text>
-        </View>
+        <Sensor />
+        <Button color='#132A3D'
+          style={{margin: 13, width: 200, alignSelf: 'center'}}
+          contentStyle={{ height: 50,  }}
+          icon="account"
+          mode='text'
+          onPress={handleOnSubmit}>
+          Registrarse
+        </Button>
       </View>
     </View>
   );
