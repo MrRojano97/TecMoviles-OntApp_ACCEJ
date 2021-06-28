@@ -1,20 +1,19 @@
 import { TextInput, Text, Button, Snackbar, ContainedButton, Colors } from 'react-native-paper';
 import { SocialIcon} from 'react-native-elements';
 import themeTextInput from '../styles/ThemeTextInput';
-
 import { Alert, Platform, View, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
 import React, { useState, useEffect } from 'react';
-
 import * as LocalAuthentication from 'expo-local-authentication';
-
 import SocialButton from '../components/SocialButton';
-
 import * as Google from 'expo-google-app-auth';
 import {auth} from '../firebase';
 import { Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import dimensions from '../styles/dimensions';
 
 export const LoginScreen = (props) => {
+  const {top} = useSafeAreaInsets()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [info, setInfo] = useState(null);
@@ -132,6 +131,7 @@ export const LoginScreen = (props) => {
         <TouchableOpacity
           onPress={
             Platform.OS === 'android' ? showAndroidAlert : scanFingerprint
+            // Platform.OS === 'android' && scanFingerprint
           }>
           <Button color='#2B5F8A'
             icon="fingerprint"
@@ -162,37 +162,23 @@ export const LoginScreen = (props) => {
         </Snackbar>
       )}
 
-      <View style={{ height: '42%', justifyContent: 'center' }}>
+      <View style={{ height: '42%', justifyContent: 'center'}}>
         
         <Image
-            style={{width:500,resizeMode:'center', marginTop:175}}
-            source={require("../assets/Ontapp_Top.png")}
+            style={{marginTop:top,width:dimensions.width,resizeMode:'center',top:top}}
+            source={require("../assets/Ontapp_Top2.png")}
           />
-        {/* <Text
-          style={{
-            fontSize: 25,
-            fontWeight: '600',
-            alignSelf: 'center'
-          }}>
-          Login
-        </Text> */}
       </View>
 
       {Platform.OS == 'android' ? (
         <View>
-          <SocialButton
-          
-          />
-
+          <SocialButton/>
           <SocialIcon
             title={"Iniciar Sesión con Facebook"}
             button={true}
             type={"facebook"}
-            onPress={AuthGoogle}
-            
-            
+            onPress={AuthGoogle}    
           />
-
           <SocialIcon
             title={"Iniciar Sesión con Google"}
             button={true}
@@ -232,7 +218,6 @@ export const LoginScreen = (props) => {
           Ingresar
         </Button>
 
-        
         <Sensor />
         <Button color='#132A3D'
           style={{margin: 13, width: 200, alignSelf: 'center'}}

@@ -8,24 +8,22 @@ import {
   Paragraph,
   Dialog
 } from 'react-native-paper';
-import { StyleSheet, View, Image } from 'react-native';
+import {View,Image,ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from '../styles/colors';
-import { makeStyles } from 'react-native-elements';
 import fontSizes from '../styles/fontSizes';
 import dimensions from '../styles/dimensions';
 import themeTextInput from '../styles/ThemeTextInput';
 import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
 import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
-import { BarOptions } from './ObjetoScreen/BarOptions';
-import firebase from '../firebase';
+import {db} from '../firebase';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
  * @returns Vista
  */
 
-export const NuevoObjetoScreen = ({}) => {
+export const NuevoObjetoScreen = () => {
   
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState()
@@ -36,6 +34,9 @@ export const NuevoObjetoScreen = ({}) => {
   const [segDecena, setSegDecena] = useState(0)
   const [contador, setContador] = useState()
   const [reproduciendo, setReproduciendo] = useState(false)
+  const [nombreObjeto, setnombreObjeto] = useState('');
+  const [descripcionObjeto, setdescripcionObjeto] = useState('');
+  const [visible, setVisible] = React.useState(false);
   const {top} = useSafeAreaInsets()
 
   const handleAbrirCamara = async() => {
@@ -88,6 +89,12 @@ export const NuevoObjetoScreen = ({}) => {
   }
   
   const handleGuardar = () => {
+    console.log(nombreObjeto)
+    console.log(descripcionObjeto)
+    db.collection('Objetos').add({
+      nombredeobjeto: nombreObjeto,
+      descripciondeobjeto: descripcionObjeto
+    });
     console.log("GUARDANDO OBJETO")
     subirImagenFirabase().then(()=>{
       console.log("imagen subida")
@@ -101,6 +108,7 @@ export const NuevoObjetoScreen = ({}) => {
     .catch((err)=>{
       console.log("ERROR SUBIENDO AUDIO",err)
     })
+    setVisible(true);
   }
   const cronometrar = () => {
     let segU=0
@@ -133,20 +141,17 @@ export const NuevoObjetoScreen = ({}) => {
     //PARA AUDIO
   }
   
-  const [nombreObjeto, setnombreObjeto] = useState('');
-  const [descripcionObjeto, setdescripcionObjeto] = useState('');
-  const [visible, setVisible] = React.useState(false);
   function hideDialog() {
     props.navigation.navigate('rutas');
     setVisible(false);
   }
-  function agregarObjeto() {
-    db.collection('Objetos').add({
-      nombredeobjeto: nombreObjeto,
-      descripciondeobjeto: descripcionObjeto
-    });
-    setVisible(true);
-  }
+  // function agregarObjeto() {
+  //   db.collection('Objetos').add({
+  //     nombredeobjeto: nombreObjeto,
+  //     descripciondeobjeto: descripcionObjeto
+  //   });
+  //   setVisible(true);
+  // }
   return (
     <ScrollView style={{top:top}}>
       <View style={{
@@ -173,9 +178,18 @@ export const NuevoObjetoScreen = ({}) => {
       <View style={{padding:20}}>
         <View style={{marginTop:20, }}>
           <Text style={{fontSize:fontSizes.medium}}>Nombre de objeto</Text>
-          <TextInput style={{marginBottom:10}} TextInput theme={themeTextInput} ></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput 
+            theme={themeTextInput}
+            onChangeText={(e) => setnombreObjeto(e)}/>
           <Text style={{fontSize:fontSizes.medium}}>Descripción</Text>
-          <TextInput style={{marginBottom:10}} TextInput theme={themeTextInput}></TextInput>
+          <TextInput 
+            style={{marginBottom:10}} 
+            TextInput 
+            theme={themeTextInput}
+            onChangeText={(e) => setdescripcionObjeto(e)}  
+            />
         </View>
         <View style={{marginBottom:10}}>
           <Text style={{fontSize:fontSizes.medium}}>Ubicación</Text>
@@ -248,7 +262,7 @@ export const NuevoObjetoScreen = ({}) => {
           </View>
         )}
       </View>
-      <Button onPress={agregarObjeto}>Agregar objeto</Button>
+      {/* <Button onPress={agregarObjeto}>Agregar objeto</Button> */}
       {visible ? (
         <Dialog visible={visible} onDismiss={hideDialog}>
           <Dialog.Content>
@@ -256,6 +270,6 @@ export const NuevoObjetoScreen = ({}) => {
           </Dialog.Content>
         </Dialog>
       ) : null}
-    </View>
+    </ScrollView>
   );
 };

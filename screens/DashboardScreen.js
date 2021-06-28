@@ -13,10 +13,14 @@ import {
 import styles from '../styles/styles';
 import BarOptions from './ObjetoScreen/BarOptions';
 import {db} from '../firebase';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const DashboardScreen = ({ navigation }) => {
   const [dataSource, setDataSource] = useState([]);
 
+  //obtener el margen superior de cada celular
+  const {top} = useSafeAreaInsets()
+  
   useState(() => {
     /*let items = Array.apply(null, Array(60)).map((v, i) => {
             return { id: i, name: 'Item ' + (i+1) , src: 'http://placehold.it/200x200?text=' + (i + 1) };
@@ -54,7 +58,7 @@ export const DashboardScreen = ({ navigation }) => {
         });
     }, []);
     return (
-        <SafeAreaView style={styles.container2}>
+        <SafeAreaView style={styles.container2,{marginTop:top}}>
         <FlatList
           data={dataSource}
           renderItem={({ item }) => (
