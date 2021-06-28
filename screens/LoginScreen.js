@@ -11,7 +11,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import SocialButton from '../components/SocialButton';
 
 import * as Google from 'expo-google-app-auth';
-import { auth } from '../firebase';
+import {auth} from '../firebase';
 import { Image } from 'react-native';
 
 export const LoginScreen = (props) => {

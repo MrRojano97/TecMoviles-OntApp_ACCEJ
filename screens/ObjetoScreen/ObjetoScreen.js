@@ -9,8 +9,9 @@ import { BarOptions } from './BarOptions'
 import dimensions from '../../styles/dimensions'
 import { useState } from 'react'
 import { EditScreen } from './EditScreen'
+import { db } from '../../firebase'
 
-export const ObjetoScreen = () => {
+export const ObjetoScreen = ({navigation,route}) => {
   const {top} = useSafeAreaInsets()
   const [optionVisible, setOptionVisible] = useState(false)
   const [editVisible, setEditVisible] = useState(false);
@@ -18,8 +19,20 @@ export const ObjetoScreen = () => {
     setOptionVisible(false)
     setEditVisible(true)
   }
+  const { item } = route.params;
+
   // const showEdit = () => setEditVisible(true);
-  const hideEdit = () => setEditVisible(false);
+  const hideEdit = () => {
+    const usersCollection = db.collection('Objetos').doc(item.id).get().then((data) => {
+      var datos = data.data();
+      item.nombredeobjeto = datos.nombredeobjeto;
+      item.descripciondeobjeto = datos.descripciondeobjeto;
+      item.direccion = datos.direccion;
+      setEditVisible(false)
+  });
+  };
+
+
   const objectJSON = {
     nombre:"Nintendo Nes",
     descripcion:"La Nintendo Nes que he tenido toda mi vida, si se me pierde sufrire.",
@@ -106,10 +119,10 @@ export const ObjetoScreen = () => {
         editVisible={editVisible} 
         showEdit={showEdit} 
         hideEdit={hideEdit}
-        objectJSON={objectJSON}
+        objectJSON={item}
         />
       <BarOptions 
-        nombreoObjeto={objectJSON.nombre} 
+        nombreoObjeto={item.nombredeobjeto} 
         showEdit={showEdit}
         optionVisible={optionVisible}
         setOptionVisible={setOptionVisible}
@@ -126,12 +139,12 @@ export const ObjetoScreen = () => {
       />
       <TituloObjeto 
         nombre="Descripción"
-        descripcion={objectJSON.descripcion}
+        descripcion={item.descripciondeobjeto}
       />
       <ObjectInfo
-        location={objectJSON.location}
-        nombre={objectJSON.nombre}
-        direccion={objectJSON.direccion}
+        location={item.location}
+        nombre={item.nombredeobjeto}
+        direccion={item.direccion}
       />
     </ScrollView>
   )
