@@ -37,7 +37,7 @@ export const NuevoObjetoScreen = () => {
   const [nombreObjeto, setnombreObjeto] = useState('');
   const [descripcionObjeto, setdescripcionObjeto] = useState('');
   const [visible, setVisible] = React.useState(false);
-  const {top} = useSafeAreaInsets()
+  const {top,bottom} = useSafeAreaInsets()
 
   const handleAbrirCamara = async() => {
     const resultado = await abrirCamara()
@@ -214,7 +214,7 @@ export const NuevoObjetoScreen = () => {
           />
         </View>
         {image && (
-          <View style={{alignItems:"center"}}>
+          <View style={{alignItems:"center", marginBottom:20}}>
             <Image source={{ uri: image }} style={{ width: 270, height: 360 }} />
           </View>
         )}
@@ -261,6 +261,9 @@ export const NuevoObjetoScreen = () => {
             )}
           </View>
         )}
+      </View>
+      <View style={{height:bottom+50}}>
+
       </View>
       {/* <Button onPress={agregarObjeto}>Agregar objeto</Button> */}
       {visible ? (

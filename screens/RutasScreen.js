@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styles from '../styles/styles'
-
 /**
  * Este es un componente funcional de ejemplo de como direccionar a una vista. 
  * Los botones contienen una accion onPress que dirige la navegacion hacia una vista.
@@ -17,7 +16,7 @@ export const RutasScreen = ({navigation}) => {
       navigation.navigate(vista)
     }
     return (
-        <View style={styles.container, {top:top+20}}>
+        <View style={ {top:top+20}}>
           <Text style={styles.textcenter}>
             Momentaneamente, la navegación entre las vistas de la aplicación se hara 
             mediante botones. Pulsar el boton de una vista para dirigirse a ella.

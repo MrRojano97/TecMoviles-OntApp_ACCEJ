@@ -14,7 +14,8 @@ import styles from '../styles/styles';
 import BarOptions from './ObjetoScreen/BarOptions';
 import {db} from '../firebase';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { MenuFab } from '../components/MenuFab'
+import { Loading } from '../components/Loading';
 export const DashboardScreen = ({ navigation }) => {
   const [dataSource, setDataSource] = useState([]);
 
@@ -59,6 +60,7 @@ export const DashboardScreen = ({ navigation }) => {
     }, []);
     return (
         <SafeAreaView style={styles.container2,{marginTop:top}}>
+        <MenuFab navigation={navigation}/>
         <FlatList
           data={dataSource}
           renderItem={({ item }) => (
@@ -90,7 +92,7 @@ export const DashboardScreen = ({ navigation }) => {
           numColumns={2}
           keyExtractor={(item, index) => index}
         />
-        
+        {/* <Loading/> */}
       </SafeAreaView>
     )
 }
