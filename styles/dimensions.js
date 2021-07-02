@@ -1,3 +1,4 @@
+
 /**Dimensiones de la ventana de aplicación */
 
 import { Dimensions } from 'react-native';

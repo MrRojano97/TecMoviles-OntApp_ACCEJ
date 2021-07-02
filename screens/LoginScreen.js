@@ -1,20 +1,25 @@
-import { TextInput, Button, Text, Snackbar} from 'react-native-paper';
-import * as React from 'react';
-import { Alert, Platform, View } from 'react-native';
+import { TextInput, Text, Button, Snackbar, ContainedButton, Colors } from 'react-native-paper';
+import { SocialIcon} from 'react-native-elements';
+import themeTextInput from '../styles/ThemeTextInput';
+import { Alert, Platform, View, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
-import { auth } from '../database/firebase';
+import React, { useState, useEffect } from 'react';
+import * as LocalAuthentication from 'expo-local-authentication';
 import SocialButton from '../components/SocialButton';
-
-
 import * as Google from 'expo-google-app-auth';
+import {auth} from '../firebase';
+import { Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import dimensions from '../styles/dimensions';
 
-export const LoginScreen = (props)  => {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [info, setInfo] = React.useState(null);
-  const [infomsg, setInfomsg] = React.useState('');
-  const [googleSubmitting, setGoogleSubmitting] = React.useState(false);
-  
+export const LoginScreen = (props) => {
+  const {top} = useSafeAreaInsets()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [info, setInfo] = useState(null);
+  const [infomsg, setInfomsg] = useState('');
+  const [googleSubmitting, setGoogleSubmitting] = useState(false);
+
   function validation() {
     if (username == '') {
       setInfomsg('Ingresa un email');
@@ -42,20 +47,20 @@ export const LoginScreen = (props)  => {
     }
   }
 
-  function AuthGoogle(){
-    
+  function AuthGoogle() {
     setGoogleSubmitting(true);
-    const config = {androidClientId: '19539297272-f73vsuptm488qt92lcsrsq0lt7jgolav.apps.googleusercontent.com',
-    scopes: ['profile', 'email']
+    const config = {
+      androidClientId:
+        '19539297272-f73vsuptm488qt92lcsrsq0lt7jgolav.apps.googleusercontent.com',
+      scopes: ['profile', 'email']
     };
 
-    Google
-      .logInAsync(config)
+    Google.logInAsync(config)
       .then((result) => {
-        const {type, user} = result;
+        const { type, user } = result;
 
-        if (type=='success') {
-          const {email, name, photoUrl} = user;
+        if (type == 'success') {
+          const { email, name, photoUrl } = user;
           console.log(email, name);
           setInfomsg('Sesión con Google iniciada correctamente', 'SUCCESS');
           setInfo(true);
@@ -66,16 +71,81 @@ export const LoginScreen = (props)  => {
         }
         setGoogleSubmitting(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        setInfomsg('Ha ocurrido un error, probablemente sea debido a su conexión a Internet');
+        setInfomsg(
+          'Ha ocurrido un error, probablemente sea debido a su conexión a Internet'
+        );
         setGoogleSubmitting(false);
         setInfo(true);
-      })
+      });
   }
+  const Sensor = () => {
+    let [compatible, setcompatible] = useState(false);
+    let [fingerprints, setfingerprints] = useState(false);
+    let [result, setresult] = useState('');
+
+    useEffect(() => {
+      checkDeviceForHardware();
+      checkForFingerprints();
+    }, []);
+
+    async function checkDeviceForHardware() {
+      setcompatible(await LocalAuthentication.hasHardwareAsync());
+    }
+
+    async function checkForFingerprints() {
+      setfingerprints(await LocalAuthentication.isEnrolledAsync());
+    }
+
+    async function scanFingerprint() {
+      let result = await LocalAuthentication.authenticateAsync(
+        'Scan your finger.'
+      );
+      setresult('Acceso verificado');
+      props.navigation.navigate('rutas');
+    }
+
+    function showAndroidAlert() {
+      Alert.alert(
+        'Sensor',
+        'Coloque su dedo sobre el sensor táctil y presione escanear.',
+        [
+          {
+            text: 'Escanear',
+            onPress: () => {
+              scanFingerprint();
+            }
+          },
+          {
+            text: 'Cancelar',
+            onPress: () => console.log('Cancel'),
+            style: 'cancel'
+          }
+        ]
+      );
+    }
+
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={
+            Platform.OS === 'android' ? showAndroidAlert : scanFingerprint
+            // Platform.OS === 'android' && scanFingerprint
+          }>
+          <Button color='#2B5F8A'
+            icon="fingerprint"
+            style={{ alignSelf: 'center'}}
+            contentStyle={{ height: 50}}
+            mode='outlined'>
+              Ingresar con Huella
+          </Button>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
-    
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       {info == true && (
         <Snackbar
           visible={info}
@@ -92,85 +162,71 @@ export const LoginScreen = (props)  => {
         </Snackbar>
       )}
 
-      <View style={{ height: '40%', justifyContent: 'center' }}>
-        <Text
-          style={{
-            fontSize: 25,
-            fontWeight: '600',
-            alignSelf: 'center'
-          }}>
-          Login
-        </Text>
-        </View>
-
-      
-      {Platform.OS == 'android'? (
-
-      <View style={styles.container}> 
-          <SocialButton 
-            //buttonTitle="Iniciar Sesión con Facebook"
-            //btnType="facebook"
-            //color="#4867aa"
-            //backgroundColor="#e6eaf4"
-            //onPress={() => {
-            //  setInfomsg('Aún no implementado');
-            //  setInfo(true);
-            //}}
+      <View style={{ height: '42%', justifyContent: 'center'}}>
+        
+        <Image
+            style={{marginTop:top,width:dimensions.width,resizeMode:'center',top:top}}
+            source={require("../assets/Ontapp_Top2.png")}
           />
-          
-          <SocialButton
-            buttonTitle="Iniciar Sesión con Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
+      </View>
+
+      {Platform.OS == 'android' ? (
+        <View>
+          <SocialButton/>
+          <SocialIcon
+            title={"Iniciar Sesión con Facebook"}
+            button={true}
+            type={"facebook"}
+            onPress={AuthGoogle}    
+          />
+          <SocialIcon
+            title={"Iniciar Sesión con Google"}
+            button={true}
+            type={"google"}
             onPress={AuthGoogle}
           />
-          
-      </View>
-      ) :null }
-
-
+        </View>
+      ) : null}
 
       <View
         style={{
           height: '60%',
           width: '85%',
           alignSelf: 'center',
-          marginTop: 70
+          marginTop: 20
         }}>
-        <TextInput
-          label='Email'
+        <TextInput theme={themeTextInput}
+          label='Correo Electrónico'
           value={username}
           onChange={(e) => setUsername(e.nativeEvent.text)}
         />
 
-        <TextInput
-          style={{ marginTop: 20 }}
-          label='Password'
+        <TextInput theme={themeTextInput}
+          style={{ marginTop: 10, color: 'blue'}}
+          label='Contraseña'
           secureTextEntry
           value={password}
           onChange={(e) => setPassword(e.nativeEvent.text)}
         />
 
-        <Button
-          style={{ margin: 20 }}
-          contentStyle={{ height: 50 }}
+        <Button color='#3B83BD'
+          style={{ margin: 20}}
+          contentStyle={{ height: 50}}
+          icon="login"
           mode='contained'
           onPress={handleOnSubmit}>
           Ingresar
         </Button>
 
-        <View style={{ height: '30%', justifyContent: 'center' }}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '300',
-            alignSelf: 'center'
-          }}>
+        <Sensor />
+        <Button color='#132A3D'
+          style={{margin: 13, width: 200, alignSelf: 'center'}}
+          contentStyle={{ height: 50,  }}
+          icon="account"
+          mode='text'
+          onPress={handleOnSubmit}>
           Registrarse
-        </Text>
-        </View>
-
+        </Button>
       </View>
     </View>
   );

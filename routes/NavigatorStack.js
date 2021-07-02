@@ -1,14 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack'
 import React from 'react'
+import {MediaPicker}  from '../components/MediaPicker';
 import { Loading } from '../components/Loading';
+import { DashboardScreen } from '../screens/DashboardScreen';
 import { GaleriaScreen } from '../screens/GaleriaScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
 import { NuevoObjetoScreen } from '../screens/NuevoObjetoScreen';
-import { ObjetoScreen } from '../screens/ObjetoScreen';
+import { ObjetoScreen } from '../screens/ObjetoScreen/ObjetoScreen';
 import { RegisterScreen } from '../screens/RegisterScreen'
 import { RutasScreen } from '../screens/RutasScreen';
+
 
 /**
  * Componente funcional que contiene las rutas de las vistas, empaquedatas en un navigation container.
@@ -20,15 +23,18 @@ export const NavigatorStack = () => {
     const Stack = createStackNavigator()
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerShown:false,         
+        }}>
           <Stack.Screen name="rutas" component={RutasScreen}/>
           <Stack.Screen name="login" component={LoginScreen}/>
-          <Stack.Screen name="galeria" component={GaleriaScreen}/>
+          {/* <Stack.Screen name="galeria" component={GaleriaScreen}/> */}
           <Stack.Screen name="mapa" component={MapaScreen}/>
           <Stack.Screen name="nuevo" component={NuevoObjetoScreen}/>
           <Stack.Screen name="objeto" component={ObjetoScreen}/>
           <Stack.Screen name="cargando" component={Loading}/>
           <Stack.Screen name="registro" component={RegisterScreen}/>
+          <Stack.Screen name="dashboard" component={DashboardScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

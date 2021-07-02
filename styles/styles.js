@@ -92,7 +92,18 @@ const styles = StyleSheet.create({
       height: 48,
       borderRadius: 48/2,
       backgroundColor: '#FFF'
-    }
+    },
+    container2: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: 'white',     
+      
+    },
+    imageThumbnail: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 128,
+    },
 });
 
 export default styles
