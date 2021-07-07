@@ -1,6 +1,6 @@
-import React, { Text, View, useState, useEffect } from 'react'
+import React, { Text, useState, useEffect } from 'react'
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, Dimensions } from 'react-native';
+import { View,ActivityIndicator,StyleSheet, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 import { Button } from 'react-native-elements';
 
@@ -10,11 +10,18 @@ export default class Map extends React.Component {
 
     state = {
         userLocation: {},
-        errorMessage: ''
+        errorMessage: '',
+        renderPos: false
     }
 
     componentDidMount(){
-        this._getLocation();
+        this._getLocation().then((userLocation) => {
+            this.setState({
+                userLocation,
+                renderPos:true
+            })
+            console.log(userLocation);
+        });
     }
 
     _getLocation = async () => {
@@ -30,41 +37,65 @@ export default class Map extends React.Component {
         
         const userLocation = await Location.getCurrentPositionAsync({});
 
-        this.setState({
-            userLocation
-        })
-
         //Obtengo las coordenadas del usuario
         console.log("\nPosición actual del usuario");
         console.log("Latitud: "+userLocation.coords.latitude);
         console.log("Longitud: "+userLocation.coords.longitude);
+        return userLocation;
+
+    }
+
+    actualPosition(){
+        if(this.state.renderPos){
+            return (<Marker
+                coordinate={{ latitude : this.state.userLocation.coords.latitude , longitude : this.state.userLocation.coords.longitude }}
+                title={"Posición actual"}
+                description={"Está es la posición actual del usuario"}
+            />);
+        }
     }
 
     render(){
-        return (
-            <MapView style={styles.map} 
-                initialRegion={{
-                    latitude: -34.9779853,
-                    longitude: -71.2528803,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-            >
-                <Marker
-                    coordinate={{ latitude : -34.9779853 , longitude : -71.2528803 }}
-                    title={"Curicó"}
-                    description={"Este es un marcador de prueba"}
-                />
-                <Marker
-                    coordinate={{ latitude : -34.9897286 , longitude : -71.2432817 }}
-                    title={"Otro marcador de prueba"}
-                    description={"Este es un segundo marcador de prueba"}
-                />
-                <Button>
-                    
-                </Button>
-            </MapView>
-        );
+        if(!this.state.renderPos){
+            return (
+                <View style={{flex:1}}>
+                    <ActivityIndicator style={{ position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center' }} size="large" color="#0000ff"/>
+                </View>
+            );
+        }else{
+            return (
+                <MapView style={styles.map} 
+                    initialRegion={{
+                        latitude: this.state.userLocation.coords.latitude,
+                        longitude: this.state.userLocation.coords.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                >
+                    <Marker
+                        coordinate={{ latitude : -34.9779853 , longitude : -71.2528803 }}
+                        title={"Curicó"}
+                        description={"Este es un marcador de prueba"}
+                    />
+                    <Marker
+                        coordinate={{ latitude : -34.9897286 , longitude : -71.2432817 }}
+                        title={"Otro marcador de prueba"}
+                        description={"Este es un segundo marcador de prueba"}
+                    />
+                    { this.actualPosition() }
+                    <Button>
+                        
+                    </Button>
+                </MapView>
+            );
+
+        }  
     }
 }
 
