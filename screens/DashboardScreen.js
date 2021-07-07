@@ -23,31 +23,6 @@ export const DashboardScreen = ({ navigation }) => {
   const {top} = useSafeAreaInsets()
   
   useState(() => {
-    /*let items = Array.apply(null, Array(60)).map((v, i) => {
-            return { id: i, name: 'Item ' + (i+1) , src: 'http://placehold.it/200x200?text=' + (i + 1) };
-        });
-        items = [
-            {
-                id: 1,
-                name: "Objeto de prueba",
-                src: "http://placehold.it/200x200?text=Item1"
-            },
-            {
-                id: 2,
-                name: "Objeto de prueba 2",
-                src: "http://placehold.it/200x200?text=Item2"
-            },
-            {
-                id: 3,
-                name: "Objeto de prueba 3",
-                src: "http://placehold.it/200x200?text=Item3"
-            },
-            {
-                id: 4,
-                name: "Objeto de prueba 4",
-                src: "http://placehold.it/200x200?text=Item4"
-            }
-        ];*/
         var list = [];
         const usersCollection = db.collection('Objetos').get().then((data) => {
             data.forEach((doc) => {
@@ -70,7 +45,7 @@ export const DashboardScreen = ({ navigation }) => {
                             borderColor: 'gainsboro', 
                             borderWidth: 1 }}>
                 <TouchableOpacity onPress={() => { navigation.navigate('objeto', { item: item })} }>
-                    <Image style={styles.imageThumbnail} source={{ uri: 'http://placehold.it/200x200?text=Item' }} />
+                    <Image style={styles.imageThumbnail} source={{ uri:item.urlObjeto }} />
                 </TouchableOpacity>
                 <Text style={{ flexDirection: 'column',
                                 justifyContent: 'space-between', 

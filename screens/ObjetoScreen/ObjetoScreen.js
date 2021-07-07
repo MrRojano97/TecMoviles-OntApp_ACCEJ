@@ -127,15 +127,9 @@ export const ObjetoScreen = ({navigation,route}) => {
         optionVisible={optionVisible}
         setOptionVisible={setOptionVisible}
         />
-      {/* <CarruselImages
-        arrayImages={imagesObject}
-        height={250}
-        width={ScreenWidth}
-      >
-      </CarruselImages> */}
       <Image
           style={styles.objectImage}
-          source={require("../../assets/nes2.jpg")}
+          source={{uri:item.urlObjeto}}
       />
       <TituloObjeto 
         nombre="Descripción"
