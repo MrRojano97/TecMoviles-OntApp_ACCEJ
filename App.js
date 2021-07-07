@@ -1,16 +1,24 @@
 import React from 'react';
-import { LogBox} from 'react-native'
+import { LogBox, View } from 'react-native';
 import { NavigatorStack } from './routes/NavigatorStack';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Button, Provider as PaperProvider } from 'react-native-paper';
+import { Version2 } from './Version2';
 
-LogBox.ignoreLogs(["Setting a timer"])
+LogBox.ignoreLogs(['Setting a timer']);
+
+/*
+Version1 : Version con los archivos originales
+Version2 : Version con archivos modificados para mantener la sesión iniciada
+
+*/
 
 export default function App() {
-  return (
-    <PaperProvider>
-      <NavigatorStack/>
-    </PaperProvider>
-    
-  );
+  function Version1() {
+    return (
+      <PaperProvider>
+        <NavigatorStack />
+      </PaperProvider>
+    );
+  }
+  return <Version1 />;
 }
-
