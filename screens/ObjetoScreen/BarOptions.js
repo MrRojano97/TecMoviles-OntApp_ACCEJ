@@ -11,7 +11,9 @@ export const BarOptions = ({
   nombreoObjeto = 'Sin nombre',
   showEdit,
   optionVisible,
-  setOptionVisible
+  setOptionVisible,
+  item,
+  navigation
 }) => {
   const handleOpen = () => {
     setOptionVisible(!optionVisible);
@@ -19,8 +21,12 @@ export const BarOptions = ({
   const closeMenu = () => {
     setOptionVisible(false);
   };
-  function eliminarObjeto() {
-    db.collection('Objetos').doc('123').delete();
+  async function  eliminarObjeto() {
+    console.log("Eliminando: ", item)
+    const res = await db.collection('Objetos').doc(item.id).delete();
+    console.log(res)
+    alert('Objeto eliminado')
+    navigation.navigate('dashboard')
   }
   return (
     <View
@@ -56,7 +62,7 @@ export const BarOptions = ({
             />
           }>
           <Menu.Item icon='pencil' onPress={showEdit} title='Editar' />
-          <Menu.Item icon='delete' onPress={() => {}} title='Eliminar' />
+          <Menu.Item icon='delete' onPress={eliminarObjeto} title='Eliminar' />
         </Menu>
       </View>
     </View>

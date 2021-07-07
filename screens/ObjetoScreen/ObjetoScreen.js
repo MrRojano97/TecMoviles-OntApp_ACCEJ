@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native'
-import CarruselImages from '../../components/CarruselImages'
 import styles from '../../styles/styles'
 import  Map from '../../components/Map'
 import { ListItem, Icon } from 'react-native-elements'
@@ -126,6 +125,8 @@ export const ObjetoScreen = ({navigation,route}) => {
         showEdit={showEdit}
         optionVisible={optionVisible}
         setOptionVisible={setOptionVisible}
+        item = {item}
+        navigation = {navigation}
         />
       <Image
           style={styles.objectImage}
