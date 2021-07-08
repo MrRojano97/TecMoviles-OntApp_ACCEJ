@@ -21,6 +21,7 @@ import {
   FAB,
   Portal,
   Provider,
+  Snackbar,
   Text
 } from 'react-native-paper';
 import dimensions from './styles/dimensions';
@@ -37,6 +38,8 @@ import { DashBoardSceenAlternativo } from './screens/alternativeScreens/DashBoar
 import { NuevoObjetoScreenAlternativo } from './screens/alternativeScreens/NuevoObjetoScreenAlternativo';
 import { ObjetoScreenAlternativo } from './screens/alternativeScreens/ObjetoScreenAlternativo';
 import {Provider as PaperProvider } from 'react-native-paper';
+import * as Google from 'expo-google-app-auth';
+import themeTextInput from './styles/ThemeTextInput';
 
 const defaultUser = { logIn: false, email: '' };
 const UserContext = React.createContext(defaultUser);
@@ -77,6 +80,7 @@ export function Version2() {
     const [password, setPassword] = useState('');
     const [info, setInfo] = useState(null);
     const [infomsg, setInfomsg] = useState('');
+    const [googleSubmitting, setGoogleSubmitting] = useState(false);
 
     const Sensor = () => {
       let [compatible, setcompatible] = useState(false);
@@ -146,6 +150,23 @@ export function Version2() {
         </View>
       );
     };
+
+    function registroFirebase(e) {
+      e.preventDefault();
+      if (validation()) {
+        auth
+          .createUserWithEmailAndPassword(username, password)
+          //.then(() => props.navigation.navigate('rutas'))
+          .catch(() => {
+            setInfomsg('Compruebe los datos ingresados o ya estás registrado');
+            setInfo(true);
+          });
+        setInfomsg('Usuario creado exitosamente');
+        setInfo(true);
+        console.log(username, password);
+      }
+    }
+
     function AuthGoogle() {
       setGoogleSubmitting(true);
       const config = {
@@ -160,7 +181,7 @@ export function Version2() {
 
           if (type == 'success') {
             const { email, name, photoUrl } = user;
-            console.log(email, name);
+            console.log(email, name); //email es username para mantener el login
             setInfomsg('Sesión con Google iniciada correctamente', 'SUCCESS');
             setInfo(true);
             //setTimeout(() => navigation.navigate('Welcome',{}))
@@ -184,18 +205,18 @@ export function Version2() {
       <ScrollView>
         {info == true && (
           <Snackbar
-            visible={info}
-            onDismiss={() => setInfo(false)}
-            action={{
-              label: 'X',
+          visible={info}
+          onDismiss={() => setInfo(false)}
+          action={{
+            label: 'X',
 
-              onPress: () => {
-                setInfo(false);
-                console.log('Mensaje cerrado por el usuario');
-              }
-            }}>
-            {infomsg}
-          </Snackbar>
+            onPress: () => {
+              setInfo(false);
+              console.log('Mensaje cerrado por el usuario');
+            }
+          }}>
+          {infomsg}
+        </Snackbar>
         )}
         <View
           style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
@@ -235,13 +256,13 @@ export function Version2() {
               alignSelf: 'center',
               marginTop: 20
             }}>
-            <TextInput
+            <TextInput theme={themeTextInput}
               label='Correo Electrónico'
               value={username}
               onChange={(e) => setUsername(e.nativeEvent.text)}
             />
 
-            <TextInput
+            <TextInput theme={themeTextInput}
               style={{ marginTop: 10, color: 'blue' }}
               label='Contraseña'
               secureTextEntry
