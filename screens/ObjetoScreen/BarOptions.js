@@ -26,7 +26,7 @@ export const BarOptions = ({
     const res = await db.collection('Objetos').doc(item.id).delete();
     console.log(res)
     alert('Objeto eliminado')
-    navigation.navigate('dashboard')
+    navigation.navigate('DashBoard')
   }
   return (
     <View

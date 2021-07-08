@@ -4,7 +4,6 @@ import React from 'react';
 import { MediaPicker } from '../components/MediaPicker';
 import { Loading } from '../components/Loading';
 import { DashboardScreen } from '../screens/DashboardScreen';
-import { GaleriaScreen } from '../screens/GaleriaScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { MapaScreen } from '../screens/MapaScreen';
 import { NuevoObjetoScreen } from '../screens/NuevoObjetoScreen';

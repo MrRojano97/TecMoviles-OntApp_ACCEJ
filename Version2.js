@@ -36,6 +36,7 @@ import { MapaScreen } from './screens/MapaScreen';
 import { DashBoardSceenAlternativo } from './screens/alternativeScreens/DashBoardScreenAlternativo';
 import { NuevoObjetoScreenAlternativo } from './screens/alternativeScreens/NuevoObjetoScreenAlternativo';
 import { ObjetoScreenAlternativo } from './screens/alternativeScreens/ObjetoScreenAlternativo';
+import {Provider as PaperProvider } from 'react-native-paper';
 
 const defaultUser = { logIn: false, email: '' };
 const UserContext = React.createContext(defaultUser);
@@ -273,50 +274,59 @@ export function Version2() {
   }
   function RutasVistas({ navigation }) {
     return (
-      <ScrollView>
-        <View style={{ alignItems: 'center', margin: 10 }}>
-          <View>
-            <Text>
-              Para ver el uso de la variable "user" y obtener los datos del
-              usuario pueden guiarse por el código de la funcion "RutaVistas" en
-              version2.js
-            </Text>
-            <Text>Ejemplo variable user con datos de la sesión actual</Text>
-            <View style={{ padding: 15 }}>
-              <Text>nombre del usuario: {user.userData.name}</Text>
-              <Text>uid user firebase: {user.userData.uid}</Text>
-              <Text>Correo usuario: {user.userData.correo}</Text>
-            </View>
-          </View>
-        </View>
+      <View>
+        {navigation.navigate('DashBoard',{ userData: user.userData, idValue:user.sesion.uid })}
+      </View>
+      // <ScrollView>
+      //   <View style={{ alignItems: 'center', margin: 10 }}>
+      //     <View>
+      //       <Text>
+      //         Para ver el uso de la variable "user" y obtener los datos del
+      //         usuario pueden guiarse por el código de la funcion "RutaVistas" en
+      //         version2.js
+      //       </Text>
+      //       <Text>Ejemplo variable user con datos de la sesión actual</Text>
+      //       <View style={{ padding: 15 }}>
+      //         <Text>nombre del usuario: {user.userData.name}</Text>
+      //         <Text>uid user firebase: {user.userData.uid}</Text>
+      //         <Text>Correo usuario: {user.userData.correo}</Text>
+      //       </View>
+      //     </View>
+      //   </View>
 
-        <View style={{ alignItems: 'center', margin: 10 }}>
-          <Text style={{ justifyContent: 'space-between' }}>
-            El dashboard alternativo es el que hice para probar lo de mantener
-            sesión iniciada. De ese componente pueden guiarse para obtener los
-            datos desde firebase.
-          </Text>
-          <Button
-            onPress={() =>
-              navigation.navigate('DashBoardSceenAlternativo', { user: user })
-            }>
-            Dashboard Alternativo
-          </Button>
-          <Button
-            onPress={() =>
-              navigation.navigate('NuevoObjetoAlternativo', {
-                userData: user.userData
-              })
-            }>
-            Nuevo Objeto
-          </Button>
+      //   <View style={{ alignItems: 'center', margin: 10 }}>
+      //     <Text style={{ justifyContent: 'space-between' }}>
+      //       El dashboard alternativo es el que hice para probar lo de mantener
+      //       sesión iniciada. De ese componente pueden guiarse para obtener los
+      //       datos desde firebase.
+      //     </Text>
+      //     <Button
+      //       onPress={() =>
+      //         navigation.navigate('DashBoardSceenAlternativo', { user: user })
+      //       }>
+      //       Dashboard Alternativo
+      //     </Button>
+      //     <Button
+      //       onPress={() =>
+      //         navigation.navigate('DashBoard', { userData: user.userData, idValue:user.sesion.uid })
+      //       }>
+      //       Dashboard
+      //     </Button>
+      //     <Button
+      //       onPress={() =>
+      //         navigation.navigate('NuevoObjetoAlternativo', {
+      //           userData: user.userData
+      //         })
+      //       }>
+      //       Nuevo Objeto
+      //     </Button>
 
-          <Text style={{ justifyContent: 'space-between' }}>
-            Para acceder a la vista del objeto deben ingresar a traves del
-            Dashboard ya que se requiere de la id de un objeto del usuario
-          </Text>
-        </View>
-      </ScrollView>
+      //     <Text style={{ justifyContent: 'space-between' }}>
+      //       Para acceder a la vista del objeto deben ingresar a traves del
+      //       Dashboard ya que se requiere de la id de un objeto del usuario
+      //     </Text>
+      //   </View>
+      // </ScrollView>
     );
 
     /* */
@@ -325,18 +335,11 @@ export function Version2() {
   function MyStack() {
     const Stack = createStackNavigator();
     return (
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
         <Stack.Screen
-          options={{
-            headerRight: () => (
-              <Button
-                style={{ marginEnd: 15 }}
-                color={colors.blue_dark}
-                onPress={() => requestLogout()}>
-                Cerrar sesión
-              </Button>
-            )
-          }}
+
           name='Inicio'
           component={RutasVistas}
         />
@@ -370,10 +373,13 @@ export function Version2() {
     );
   }
   return (
-    <UserProvider value={user}>
-      <NavigationContainer>
-        <MyStack />
-      </NavigationContainer>
-    </UserProvider>
+    <PaperProvider>
+      <UserProvider value={user}>
+
+        <NavigationContainer>
+          <MyStack />
+        </NavigationContainer>
+      </UserProvider>
+    </PaperProvider>
   );
 }

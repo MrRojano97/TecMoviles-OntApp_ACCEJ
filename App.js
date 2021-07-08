@@ -20,5 +20,5 @@ export default function App() {
       </PaperProvider>
     );
   }
-  return <Version1 />;
+  return <Version2 />;
 }

@@ -138,7 +138,7 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
         );
         subirImagenFirabase(snapshot.id);
       });
-    navigation.navigate('dashboard');
+    navigation.navigate('DashBoard');
   }
   const cronometrar = () => {
     let segU=0

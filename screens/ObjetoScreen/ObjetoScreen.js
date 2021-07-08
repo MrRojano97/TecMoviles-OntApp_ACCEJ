@@ -22,7 +22,7 @@ export const ObjetoScreen = ({navigation,route}) => {
 
   // const showEdit = () => setEditVisible(true);
   const hideEdit = () => {
-    const usersCollection = db.collection('Objetos').doc(item.id).get().then((data) => {
+    db.collection('Objetos').doc(item.idObjeto).get().then((data) => {
       var datos = data.data();
       item.nombredeobjeto = datos.nombredeobjeto;
       item.descripciondeobjeto = datos.descripciondeobjeto;
