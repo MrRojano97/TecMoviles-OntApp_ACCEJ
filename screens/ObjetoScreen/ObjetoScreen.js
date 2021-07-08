@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native'
-import CarruselImages from '../../components/CarruselImages'
 import styles from '../../styles/styles'
 import  Map from '../../components/Map'
 import { ListItem, Icon } from 'react-native-elements'
@@ -23,7 +22,7 @@ export const ObjetoScreen = ({navigation,route}) => {
 
   // const showEdit = () => setEditVisible(true);
   const hideEdit = () => {
-    const usersCollection = db.collection('Objetos').doc(item.id).get().then((data) => {
+    db.collection('Objetos').doc(item.idObjeto).get().then((data) => {
       var datos = data.data();
       item.nombredeobjeto = datos.nombredeobjeto;
       item.descripciondeobjeto = datos.descripciondeobjeto;
@@ -126,16 +125,12 @@ export const ObjetoScreen = ({navigation,route}) => {
         showEdit={showEdit}
         optionVisible={optionVisible}
         setOptionVisible={setOptionVisible}
+        item = {item}
+        navigation = {navigation}
         />
-      {/* <CarruselImages
-        arrayImages={imagesObject}
-        height={250}
-        width={ScreenWidth}
-      >
-      </CarruselImages> */}
       <Image
           style={styles.objectImage}
-          source={require("../../assets/nes2.jpg")}
+          source={{uri:item.urlObjeto}}
       />
       <TituloObjeto 
         nombre="Descripción"

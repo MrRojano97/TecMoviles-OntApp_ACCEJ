@@ -39,7 +39,7 @@ export const LoginScreen = (props) => {
     if (validation()) {
       auth
         .signInWithEmailAndPassword(username, password)
-        .then(() => props.navigation.navigate('rutas'))
+        .then(() => props.navigation.navigate('dashboard'))
         .catch(() => {
           setInfomsg('Error en los datos');
           setInfo(true);
@@ -103,7 +103,7 @@ export const LoginScreen = (props) => {
         'Scan your finger.'
       );
       setresult('Acceso verificado');
-      props.navigation.navigate('rutas');
+      props.navigation.navigate('dashboard');
     }
 
     function showAndroidAlert() {

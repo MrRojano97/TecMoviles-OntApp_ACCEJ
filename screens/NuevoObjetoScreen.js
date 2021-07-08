@@ -16,14 +16,14 @@ import dimensions from '../styles/dimensions';
 import themeTextInput from '../styles/ThemeTextInput';
 import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
 import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
-import {db} from '../firebase';
+import {db, storage} from '../firebase';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
  * @returns Vista
  */
 
-export const NuevoObjetoScreen = () => {
+export const NuevoObjetoScreen = ({navigation,route}) => {
   
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState()
@@ -37,7 +37,11 @@ export const NuevoObjetoScreen = () => {
   const [nombreObjeto, setnombreObjeto] = useState('');
   const [descripcionObjeto, setdescripcionObjeto] = useState('');
   const [visible, setVisible] = React.useState(false);
-  const {top} = useSafeAreaInsets()
+  const {top,bottom} = useSafeAreaInsets()
+
+  const {userData} = route.params;
+  const [urlImagen, seturlImagen] = useState(null);
+  const [urlAudio, seturlAudio] = useState(null);
 
   const handleAbrirCamara = async() => {
     const resultado = await abrirCamara()
@@ -54,19 +58,42 @@ export const NuevoObjetoScreen = () => {
     }
   }
 
-  const subirImagenFirabase = async() => {
+  const subirImagenFirabase = async(idDocumento) => {
+    // const response = await fetch(image)
+    // console.log("Response: ",JSON.stringify(response))
+    // const blob = await response.blob()
+    // console.log("Blob: " ,JSON.stringify(blob))
+    // const ref = db.ref().child(`ImagenObjeto/imagen`)
+    // return ref.put(blob)
     const response = await fetch(image)
     console.log("Response: ",JSON.stringify(response))
     const blob = await response.blob()
-    console.log("Blob: " ,JSON.stringify(blob))
-    const ref = firebase.storage().ref().child(`ImagenObjeto/imagen`)
-    return ref.put(blob)
+
+    storage
+      .ref()
+      .child(`ImagenObjeto/${userData.uid}/${idDocumento}`)
+      .put(blob)
+      .catch(
+        db
+          .collection('Objetos')
+          .doc(idDocumento)
+          .set(
+            {
+              idObjeto: idDocumento,
+              urlObjeto: `https://firebasestorage.googleapis.com/v0/b/ontapp-b3ef8.appspot.com/o/ImagenObjeto%2F${userData.uid}%2F${idDocumento}?alt=media&token=fc82f026-eaaa-4d24-a05c-f530b3577384`
+            },
+            { merge: true }
+          )
+      );
   }
   const subirAudioFirebase = async ( )=>{
     const response = await fetch(uriAudio)
     const blob = await response.blob()
-    const ref = firebase.storage().ref().child(`AudioObjeto/audio`)
-    return ref.put(blob)
+    storage()
+    .ref()
+    .child(`AudioObjeto/${userData.uid}/${iddocumento}`)
+    .put(blob)
+    .catch(console.log('Posible error'));
   }
   const handleGrabar = async() => {
     const grabacion = await comenzarGrabacion()
@@ -91,24 +118,27 @@ export const NuevoObjetoScreen = () => {
   const handleGuardar = () => {
     console.log(nombreObjeto)
     console.log(descripcionObjeto)
-    db.collection('Objetos').add({
-      nombredeobjeto: nombreObjeto,
-      descripciondeobjeto: descripcionObjeto
-    });
-    console.log("GUARDANDO OBJETO")
-    subirImagenFirabase().then(()=>{
-      console.log("imagen subida")
-    })
-    .catch((err)=>{
-      console.log("ERROR SUBIENDO IMAGEN",err)
-    })
-    subirAudioFirebase().then(()=>{
-      console.log("Audio subido")
-    })
-    .catch((err)=>{
-      console.log("ERROR SUBIENDO AUDIO",err)
-    })
-    setVisible(true);
+    db.collection('Objetos')
+      .add({
+        nombredeobjeto: nombreObjeto,
+        descripciondeobjeto: descripcionObjeto,
+        idusuario: userData.uid
+      })
+      .then((snapshot) => {
+        const url =
+          'https://firebasestorage.googleapis.com/v0/b/ontapp-b3ef8.appspot.com/o/ImagenObjeto%2Fsinimagen.jpg?alt=media&token=fc82f026-eaaa-4d24-a05c-f530b3577384';
+
+        subirAudioFirebase(snapshot.id);
+        db.collection('Objetos').doc(snapshot.id).set(
+          {
+            idObjeto: snapshot.id,
+            urlObjeto: url
+          },
+          { merge: true }
+        );
+        subirImagenFirabase(snapshot.id);
+      });
+    navigation.navigate('DashBoard');
   }
   const cronometrar = () => {
     let segU=0
@@ -214,7 +244,7 @@ export const NuevoObjetoScreen = () => {
           />
         </View>
         {image && (
-          <View style={{alignItems:"center"}}>
+          <View style={{alignItems:"center", marginBottom:20}}>
             <Image source={{ uri: image }} style={{ width: 270, height: 360 }} />
           </View>
         )}
@@ -261,6 +291,9 @@ export const NuevoObjetoScreen = () => {
             )}
           </View>
         )}
+      </View>
+      <View style={{height:bottom+50}}>
+
       </View>
       {/* <Button onPress={agregarObjeto}>Agregar objeto</Button> */}
       {visible ? (
