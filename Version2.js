@@ -383,6 +383,7 @@ export function Version2() {
       </View>
     );
   }
+
   function RutasVistas({ navigation }) {
     return (
       <View>
@@ -463,6 +464,7 @@ export function Version2() {
           component={DashBoardSceenAlternativo}
         />
         <Stack.Screen name='mapa' component={MapaScreen} />
+
         <Stack.Screen name='cargando' component={Loading} />
         <Stack.Screen
           name='NuevoObjetoAlternativo'

@@ -3,31 +3,51 @@ import MapView, {Marker} from 'react-native-maps';
 import { View,ActivityIndicator,StyleSheet, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 import { Button } from 'react-native-elements';
+import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
+import { db } from '../firebase';
 
 let a; 
 
 export default class Map extends React.Component {  
-
+    
     constructor(props){
       super(props);
       this.state = {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
+        height: Dimensions.get('window').height,
+        userData: props.userData
       }
     }
     state = {
         userLocation: {},
         errorMessage: '',
-        renderPos: false
+        renderPos: false,
+        userData: {},
+        data: []
     }
 
     componentDidMount(){
+
         this._getLocation().then((userLocation) => {
             this.setState({
                 userLocation,
                 renderPos:true
             })
             console.log(userLocation);
+        });
+
+
+
+        console.log(this.state.userData);
+       db.collection('Objetos').where('idusuario', '==', this.state.userData.uid).onSnapshot((data) => {
+            const list = [];
+            data.forEach((doc) => {
+                let obj = doc.data();
+                obj.id = doc.id;
+                console.log(doc.data());
+                list.push(obj);
+            });
+            this.setState({data:list});
         });
     }
 
@@ -62,6 +82,7 @@ export default class Map extends React.Component {
         }
     }
 
+
     render(){
         if(!this.state.renderPos){
             return (
@@ -84,21 +105,15 @@ export default class Map extends React.Component {
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
-                >
-                    <Marker
-                        coordinate={{ latitude : -34.9779853 , longitude : -71.2528803 }}
-                        title={"Curicó"}
-                        description={"Este es un marcador de prueba"}
-                    />
-                    <Marker
-                        coordinate={{ latitude : -34.9897286 , longitude : -71.2432817 }}
-                        title={"Otro marcador de prueba"}
-                        description={"Este es un segundo marcador de prueba"}
-                    />
+                >   
+                {this.state.data.map((prop, key) => {
+                    return (<Marker
+                        key={key}
+                        coordinate={{ latitude : prop.coordenadas.latitude , longitude : prop.coordenadas.longitude }}
+                        title={prop.nombredeobjeto}
+                    />)
+                })}
                     { this.actualPosition() }
-                    <Button>
-                        
-                    </Button>
                 </MapView>
             );
 

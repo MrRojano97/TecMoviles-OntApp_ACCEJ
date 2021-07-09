@@ -22,11 +22,15 @@ export default class Map extends React.Component {
     }
 
     componentDidMount(){
+
         this._getLocation().then((userLocation) => {
             this.setState({
                 userLocation,
                 renderPos:true
             })
+            this.props.changeLoading();
+
+            console.log("Cargado");
             // console.log(userLocation);
         });
     }
@@ -43,7 +47,6 @@ export default class Map extends React.Component {
         })
         
         const userLocation = await Location.getCurrentPositionAsync({});
-
         //Obtengo las coordenadas del usuario
         // console.log("\nPosición actual del usuario");
         // console.log("Latitud: "+userLocation.coords.latitude);

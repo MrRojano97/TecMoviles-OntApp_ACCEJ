@@ -2,10 +2,11 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Map from '../components/Map'
 
-export const MapaScreen = () => {
+export const MapaScreen = ({navigation,route}) => {
+  const {idValue, userData} = route.params
   return (
       <View style={styles.container}>
-          <Map/>
+          <Map userData={userData}/>
       </View>
   )
 }

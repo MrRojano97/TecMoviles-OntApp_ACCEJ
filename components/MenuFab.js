@@ -29,7 +29,9 @@ export const MenuFab = ({navigation,route}) => {
           {
             icon: 'map',
             label: 'Mapa',
-            onPress: () => {navigation.navigate('mapa')},
+            onPress: () => {navigation.navigate('mapa', {
+              userData: userData,
+              idValue: idValue})},
           },
           // {
           //   icon: 'account',
