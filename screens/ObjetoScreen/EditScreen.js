@@ -9,14 +9,16 @@ export const EditScreen = ({editVisible, showEdit, hideEdit,objectJSON}) => {
 
   const [descripcion, setDescripcion] = useState(objectJSON.descripciondeobjeto)
   const [nombre, setNombre] = useState(objectJSON.nombredeobjeto)
-  const [direccion, setDireccion] = useState(objectJSON.direccion)
   const containerStyle = {innerHeighth:100,backgroundColor: 'white', padding: 10};
   
   function handleOnSubmit(){
+    if(descripcion == "")
+      setDescripcion(objectJSON.descripciondeobjeto);
+    if(nombre == "")
+      setNombre(objectJSON.nombredeobjeto);
     db.collection('Objetos').doc(objectJSON.id).update({
       nombredeobjeto: nombre,
       descripciondeobjeto: descripcion,
-      direccion: direccion
     })
     .then(() => {
       console.log('Objeto actualizado');
@@ -45,13 +47,7 @@ export const EditScreen = ({editVisible, showEdit, hideEdit,objectJSON}) => {
             onChange={(e) => setDescripcion(e.nativeEvent.text)}
             theme={themeTextInput}
           ></TextInput>
-          <TextInput 
-          TextInput 
-          label="Dirección" 
-          placeholder={objectJSON.direccion}
-          onChange={(e) => setDireccion(e.nativeEvent.text)}
-          theme={themeTextInput}
-          ></TextInput>
+          
         </View>
         <View style={{
           width:dimensions.width-20, 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, ScrollView, Image, Button } from 'react-native';
 import styles from '../../styles/styles';
 import { ListItem, Icon } from 'react-native-elements';
@@ -8,11 +8,14 @@ import { useState } from 'react';
 import { EditScreen } from './EditScreen';
 import { db } from '../../firebase';
 import MapObjeto from '../../components/MapObjeto';
-import { Audio } from 'expo-av';
+import { Audio } from 'expo';
+import AudioPlayer from '../../components/AudioPlayer';
+
 export const ObjetoScreen = ({ navigation, route }) => {
   const { top } = useSafeAreaInsets();
   const [optionVisible, setOptionVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const [isLoaidng, setIsLoading] = useState(true);
   // const [sound, setSound] = React.useState();
   const showEdit = () => {
     setOptionVisible(false);
@@ -20,19 +23,12 @@ export const ObjetoScreen = ({ navigation, route }) => {
   };
   const { item, userData } = route.params;
 
-  async function playSound(e) {
-    e.preventDefault();
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-      { uri: item.urlAudio },
-      {},
-      true
-    );
-    // setSound(sound);
-
-    console.log('Playing Sound');
-    await sound.playAsync();
-  }
+  const changeLoading = () => {
+    this.setState({
+      isLoading: !this.state.isLoading
+    });
+    console.log(isLoading);
+  };
 
   // const showEdit = () => setEditVisible(true);
   const hideEdit = () => {
@@ -62,7 +58,7 @@ export const ObjetoScreen = ({ navigation, route }) => {
     const listInfo = [
       {
         text: direccion,
-        iconName: 'map-marker',
+        iconName: 'microphone',
         iconType: 'material-community',
         action: null
       },
@@ -85,7 +81,7 @@ export const ObjetoScreen = ({ navigation, route }) => {
           style={{height:100, width:dimensions.width-30, marginBottom:5}}
           source={require("../../assets/map.jpg")}
         /> */}
-        <MapObjeto item={item} />
+        <MapObjeto userData={userData} item={item} changeLoading={changeLoading} />
         <View>
           <ListItem bottomDivider>
             <Icon name={listInfo[0].iconName} type={listInfo[0].iconType} />
@@ -96,7 +92,9 @@ export const ObjetoScreen = ({ navigation, route }) => {
               {/* <RemoteSound
                 item = {item}
               /> */}
-              <Button title='Play Sound' onPress={playSound} />
+              <AudioPlayer source={item.urlAudio}>
+
+              </AudioPlayer>
             </ListItem.Content>
           </ListItem>
 
