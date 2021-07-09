@@ -10,10 +10,10 @@ export default class Map extends React.Component {
 
     constructor(props){
       super(props);
-      this.state = {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
-      }
+      // this.state = {
+      //   width: Dimensions.get('window').width,
+      //   height: Dimensions.get('window').height
+      // }
     }
     state = {
         userLocation: {},
@@ -27,7 +27,7 @@ export default class Map extends React.Component {
                 userLocation,
                 renderPos:true
             })
-            console.log(userLocation);
+            // console.log(userLocation);
         });
     }
 
@@ -45,9 +45,9 @@ export default class Map extends React.Component {
         const userLocation = await Location.getCurrentPositionAsync({});
 
         //Obtengo las coordenadas del usuario
-        console.log("\nPosición actual del usuario");
-        console.log("Latitud: "+userLocation.coords.latitude);
-        console.log("Longitud: "+userLocation.coords.longitude);
+        // console.log("\nPosición actual del usuario");
+        // console.log("Latitud: "+userLocation.coords.latitude);
+        // console.log("Longitud: "+userLocation.coords.longitude);
         return userLocation;
 
     }
@@ -79,21 +79,18 @@ export default class Map extends React.Component {
             return (
                 <MapView style={styles.map} 
                     initialRegion={{
-                        latitude: this.state.userLocation.coords.latitude,
-                        longitude: this.state.userLocation.coords.longitude,
+                        latitude: this.props.item.coordenadas.latitude,
+                        longitude: this.props.item.coordenadas.longitude,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
                 >
                     <Marker
-                        coordinate={{ latitude : -34.9779853 , longitude : -71.2528803 }}
-                        title={"Curicó"}
-                        description={"Este es un marcador de prueba"}
-                    />
-                    <Marker
-                        coordinate={{ latitude : -34.9897286 , longitude : -71.2432817 }}
-                        title={"Otro marcador de prueba"}
-                        description={"Este es un segundo marcador de prueba"}
+                        coordinate={{ latitude : this.props.item.coordenadas.latitude , 
+                        longitude : this.props.item.coordenadas.longitude }}
+                        title={"Aqui esta tu objeto"}
+                        
+                        // description={"Este es un segundo marcador de prueba"}
                     />
                     { this.actualPosition() }
                     <Button>
@@ -108,7 +105,7 @@ export default class Map extends React.Component {
 
 const styles = StyleSheet.create({
     map: {
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+      width: Dimensions.get('window').width-40,
+      height: 150,
     },
   });

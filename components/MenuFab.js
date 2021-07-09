@@ -6,6 +6,7 @@ import colors from '../styles/colors';
 export const MenuFab = ({navigation,route}) => {
   const [state, setState] = React.useState({ open: false });
   const {idValue, userData} = route.params
+  console.log("Menu FAB, con ",route.params)
   const onStateChange = ({ open }) => setState({ open });
   const requestLogout = useCallback(() => {
     logout();

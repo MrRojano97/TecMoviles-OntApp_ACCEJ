@@ -21,6 +21,7 @@ import { render } from 'react-dom';
 
 export const DashboardScreen = ({ navigation, route }) => {
   const [dataSource, setDataSource] = useState([]);
+  console.log("Dash con ",route.params)
   const {userData,idValue} = route.params
   //obtener el margen superior de cada celular
   const {top} = useSafeAreaInsets()

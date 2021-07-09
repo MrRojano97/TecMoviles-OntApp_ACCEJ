@@ -27,7 +27,7 @@ export default class Map extends React.Component {
                 userLocation,
                 renderPos:true
             })
-            console.log(userLocation);
+            // console.log(userLocation);
         });
     }
 
@@ -45,9 +45,9 @@ export default class Map extends React.Component {
         const userLocation = await Location.getCurrentPositionAsync({});
 
         //Obtengo las coordenadas del usuario
-        console.log("\nPosición actual del usuario");
-        console.log("Latitud: "+userLocation.coords.latitude);
-        console.log("Longitud: "+userLocation.coords.longitude);
+        // console.log("\nPosición actual del usuario");
+        // console.log("Latitud: "+userLocation.coords.latitude);
+        // console.log("Longitud: "+userLocation.coords.longitude);
         return userLocation;
 
     }
@@ -108,7 +108,7 @@ export default class Map extends React.Component {
 
 const styles = StyleSheet.create({
     map: {
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+      width: Dimensions.get('window').width-40,
+      height: 100,
     },
   });
