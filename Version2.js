@@ -26,7 +26,7 @@ import {
 } from 'react-native-paper';
 import dimensions from './styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
-import { login, logout, onAuthStateChange } from './firebase';
+import { login, logout, onAuthStateChange, auth } from './firebase';
 import { NuevoObjetoScreen } from './screens/NuevoObjetoScreen';
 import { ObjetoScreen } from './screens/ObjetoScreen/ObjetoScreen';
 import colors from './styles/colors';
@@ -110,6 +110,8 @@ export function Version2() {
           'Scan your finger.'
         );
         console.log('Ingreso correcto');
+        login('camilo@ontapp.com', '123456');
+
       }
       function showAndroidAlert() {
         Alert.alert(
@@ -136,6 +138,7 @@ export function Version2() {
           <TouchableOpacity
             onPress={
               Platform.OS === 'android' ? showAndroidAlert : scanFingerprint
+
               // Platform.OS === 'android' && scanFingerprint
             }>
             <Button
@@ -151,22 +154,7 @@ export function Version2() {
       );
     };
 
-    function registroFirebase(e) {
-      e.preventDefault();
-      if (validation()) {
-        auth
-          .createUserWithEmailAndPassword(username, password)
-          //.then(() => props.navigation.navigate('rutas'))
-          .catch(() => {
-            setInfomsg('Compruebe los datos ingresados o ya estás registrado');
-            setInfo(true);
-          });
-        setInfomsg('Usuario creado exitosamente');
-        setInfo(true);
-        console.log(username, password);
-      }
-    }
-
+    
     function AuthGoogle() {
       setGoogleSubmitting(true);
       const config = {
@@ -184,6 +172,8 @@ export function Version2() {
             console.log(email, name); //email es username para mantener el login
             setInfomsg('Sesión con Google iniciada correctamente', 'SUCCESS');
             setInfo(true);
+            login(email, email);
+
             //setTimeout(() => navigation.navigate('Welcome',{}))
           } else {
             setInfomsg('El inicio de sesión con Google se ha interrumpido');
@@ -201,26 +191,52 @@ export function Version2() {
         });
     }
 
+    function validation() {
+      if (username == '') {
+        setInfomsg('Ingresa un email');
+        setInfo(true);
+        return false;
+      } else if (password == '') {
+        setInfomsg('Ingresa una contraseña');
+        setInfo(true);
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function registroFirebase(e) {
+      e.preventDefault();
+      if (validation()) {
+        auth
+          .createUserWithEmailAndPassword(username, password)
+          //.then(() => props.navigation.navigate('rutas'))
+          .catch(() => {
+            setInfomsg('Compruebe los datos ingresados o ya estás registrado');
+            setInfo(true);
+          });
+        setInfomsg('Usuario creado exitosamente');
+        setInfo(true);
+        console.log(username, password);
+      }
+    }
+
+
     return (
-      <ScrollView>
+      <View style={{marginTop: 100, justifyContent: 'center'}}>
+        <View>
         {info == true && (
           <Snackbar
           visible={info}
-          onDismiss={() => setInfo(false)}
-          action={{
-            label: 'X',
-
-            onPress: () => {
-              setInfo(false);
-              console.log('Mensaje cerrado por el usuario');
-            }
-          }}>
+          onDismiss={() => setInfo(false)}>
           {infomsg}
-        </Snackbar>
-        )}
+        </Snackbar>)}
+        </View>
         <View
-          style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ height: '15%', justifyContent: 'center' }}>
+          style={{ flex: 0, justifyContent: 'center', alignItems: 'center'}}>
+            
+          <View style={{ height: '20%', justifyContent: 'center' }}>
+            
             <Image
               style={{
                 marginTop: 0,
@@ -230,6 +246,7 @@ export function Version2() {
               }}
               source={require('./assets/Ontapp_Top2.png')}
             />
+          
           </View>
           {Platform.OS == 'android' ? (
             <View>
@@ -285,12 +302,13 @@ export function Version2() {
               style={{ margin: 13, width: 200, alignSelf: 'center' }}
               contentStyle={{ height: 50 }}
               icon='account'
-              mode='text'>
+              mode='text'
+              onPress={registroFirebase}>
               Registrarse
             </Button>
           </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
   function RutasVistas({ navigation }) {
