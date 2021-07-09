@@ -92,10 +92,7 @@ export default class Map extends React.Component {
                         
                         // description={"Este es un segundo marcador de prueba"}
                     />
-                    { this.actualPosition() }
-                    <Button>
-                        
-                    </Button>
+                    {/* { this.actualPosition() } */}
                 </MapView>
             );
 
