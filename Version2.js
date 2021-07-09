@@ -26,7 +26,7 @@ import {
 } from 'react-native-paper';
 import dimensions from './styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
-import { login, logout, onAuthStateChange, auth } from './firebase';
+import { login, logout, onAuthStateChange, auth, db } from './firebase';
 import { NuevoObjetoScreen } from './screens/NuevoObjetoScreen';
 import { ObjetoScreen } from './screens/ObjetoScreen/ObjetoScreen';
 import colors from './styles/colors';
@@ -37,7 +37,7 @@ import { MapaScreen } from './screens/MapaScreen';
 import { DashBoardSceenAlternativo } from './screens/alternativeScreens/DashBoardScreenAlternativo';
 import { NuevoObjetoScreenAlternativo } from './screens/alternativeScreens/NuevoObjetoScreenAlternativo';
 import { ObjetoScreenAlternativo } from './screens/alternativeScreens/ObjetoScreenAlternativo';
-import {Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import * as Google from 'expo-google-app-auth';
 import themeTextInput from './styles/ThemeTextInput';
 
@@ -111,7 +111,6 @@ export function Version2() {
         );
         console.log('Ingreso correcto');
         login('camilo@ontapp.com', '123456');
-
       }
       function showAndroidAlert() {
         Alert.alert(
@@ -154,7 +153,6 @@ export function Version2() {
       );
     };
 
-    
     function AuthGoogle() {
       setGoogleSubmitting(true);
       const config = {
@@ -207,36 +205,42 @@ export function Version2() {
 
     function registroFirebase(e) {
       e.preventDefault();
-      if (validation()) {
-        auth
-          .createUserWithEmailAndPassword(username, password)
-          //.then(() => props.navigation.navigate('rutas'))
-          .catch(() => {
-            setInfomsg('Compruebe los datos ingresados o ya estás registrado');
-            setInfo(true);
+
+      auth
+        .createUserWithEmailAndPassword(correoRegistro, passwordRegistro)
+        .then((doc) => {
+          db.collection('users').doc(doc.user.uid).set({
+            name: nombreRegistro,
+            correo: correoRegistro,
+            uid: doc.user.uid
           });
-        setInfomsg('Usuario creado exitosamente');
-        setInfo(true);
-        console.log(username, password);
-      }
+          setInfomsg('Usuario creado exitosamente'), setregistroVisible(false);
+        })
+        //.then(() => props.navigation.navigate('rutas'))
+        .catch(() => {
+          setInfomsg('Compruebe los datos ingresados o ya estás registrado');
+          setInfo(true);
+        });
+
+      console.log(username, password);
     }
 
-
+    const [registroVisible, setregistroVisible] = useState(false);
+    const [nombreRegistro, setnombreRegistro] = useState('');
+    const [passwordRegistro, setpasswordRegistro] = useState('');
+    const [correoRegistro, setcorreoRegistro] = useState('');
     return (
-      <View style={{marginTop: 100, justifyContent: 'center'}}>
+      <View style={{ marginTop: 100, justifyContent: 'center' }}>
         <View>
-        {info == true && (
-          <Snackbar
-          visible={info}
-          onDismiss={() => setInfo(false)}>
-          {infomsg}
-        </Snackbar>)}
+          {info == true && (
+            <Snackbar visible={info} onDismiss={() => setInfo(false)}>
+              {infomsg}
+            </Snackbar>
+          )}
         </View>
         <View
-          style={{ flex: 0, justifyContent: 'center', alignItems: 'center'}}>
-            
+          style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ height: '20%', justifyContent: 'center' }}>
-            
             <Image
               style={{
                 marginTop: 0,
@@ -246,67 +250,135 @@ export function Version2() {
               }}
               source={require('./assets/Ontapp_Top2.png')}
             />
-          
           </View>
-          {Platform.OS == 'android' ? (
-            <View>
-              <SocialButton />
-              <SocialIcon
-                title={'Iniciar Sesión con Facebook'}
-                button={true}
-                type={'facebook'}
-                onPress={AuthGoogle}
+          {!registroVisible ? (
+            <>
+              {Platform.OS == 'android' ? (
+                <View>
+                  <SocialButton />
+                  <SocialIcon
+                    title={'Iniciar Sesión con Facebook'}
+                    button={true}
+                    type={'facebook'}
+                    onPress={AuthGoogle}
+                  />
+                  <SocialIcon
+                    title={'Iniciar Sesión con Google'}
+                    button={true}
+                    type={'google'}
+                    onPress={AuthGoogle}
+                  />
+                </View>
+              ) : null}
+
+              <View
+                style={{
+                  height: '60%',
+                  width: '85%',
+                  alignSelf: 'center',
+                  marginTop: 20
+                }}>
+                <TextInput
+                  theme={themeTextInput}
+                  label='Correo Electrónico'
+                  value={username}
+                  onChange={(e) => setUsername(e.nativeEvent.text)}
+                />
+
+                <TextInput
+                  theme={themeTextInput}
+                  style={{ marginTop: 10, color: 'blue' }}
+                  label='Contraseña'
+                  secureTextEntry
+                  value={password}
+                  onChange={(e) => setPassword(e.nativeEvent.text)}
+                />
+
+                <Button
+                  color='#3B83BD'
+                  style={{ margin: 20 }}
+                  contentStyle={{ height: 50 }}
+                  icon='login'
+                  mode='contained'
+                  onPress={(e) => onClick(username, password)}>
+                  Ingresar
+                </Button>
+                <Sensor />
+                <Button
+                  color='#132A3D'
+                  style={{ margin: 13, width: 200, alignSelf: 'center' }}
+                  contentStyle={{ height: 50 }}
+                  icon='account'
+                  mode='text'
+                  onPress={(e) => setregistroVisible(true)}>
+                  Registrarse
+                </Button>
+              </View>
+            </>
+          ) : (
+            <View
+              style={{
+                height: '84%',
+                width: '115%',
+                alignSelf: 'center',
+                marginTop: 20,
+                padding: 60
+              }}>
+              <View style={{ alignItems: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    margin: 20,
+                    justifyContent: 'center',
+                    color: '#3B83BD'
+                  }}>
+                  Registrate!
+                </Text>
+              </View>
+              <TextInput
+                theme={themeTextInput}
+                label='Nombre'
+                value={nombreRegistro}
+                onChange={(e) => setnombreRegistro(e.nativeEvent.text)}
               />
-              <SocialIcon
-                title={'Iniciar Sesión con Google'}
-                button={true}
-                type={'google'}
-                onPress={AuthGoogle}
+              <TextInput
+                theme={themeTextInput}
+                style={{ marginTop: 10, color: 'blue' }}
+                label='Correo Electrónico'
+                value={correoRegistro}
+                onChange={(e) => setcorreoRegistro(e.nativeEvent.text)}
               />
+
+              <TextInput
+                theme={themeTextInput}
+                style={{ marginTop: 10, color: 'blue' }}
+                label='Contraseña'
+                secureTextEntry
+                value={passwordRegistro}
+                onChange={(e) => setpasswordRegistro(e.nativeEvent.text)}
+              />
+
+              <Button
+                color='#3B83BD'
+                style={{ margin: 20 }}
+                contentStyle={{ height: 50 }}
+                icon='login'
+                mode='contained'
+                onPress={registroFirebase}>
+                Registrarse
+              </Button>
+
+              <Button
+                color='#132A3D'
+                style={{ margin: 13, width: 200, alignSelf: 'center' }}
+                contentStyle={{ height: 50 }}
+                icon='account'
+                mode='text'
+                onPress={(e) => setregistroVisible(false)}>
+                Volver
+              </Button>
             </View>
-          ) : null}
-
-          <View
-            style={{
-              height: '60%',
-              width: '85%',
-              alignSelf: 'center',
-              marginTop: 20
-            }}>
-            <TextInput theme={themeTextInput}
-              label='Correo Electrónico'
-              value={username}
-              onChange={(e) => setUsername(e.nativeEvent.text)}
-            />
-
-            <TextInput theme={themeTextInput}
-              style={{ marginTop: 10, color: 'blue' }}
-              label='Contraseña'
-              secureTextEntry
-              value={password}
-              onChange={(e) => setPassword(e.nativeEvent.text)}
-            />
-
-            <Button
-              color='#3B83BD'
-              style={{ margin: 20 }}
-              contentStyle={{ height: 50 }}
-              icon='login'
-              mode='contained'
-              onPress={(e) => onClick(username, password)}>
-              Ingresar
-            </Button>
-            <Sensor />
-            <Button
-              color='#132A3D'
-              style={{ margin: 13, width: 200, alignSelf: 'center' }}
-              contentStyle={{ height: 50 }}
-              icon='account'
-              mode='text'
-              onPress={registroFirebase}>
-              Registrarse
-            </Button>
-          </View>
+          )}
         </View>
       </View>
     );
@@ -314,7 +386,10 @@ export function Version2() {
   function RutasVistas({ navigation }) {
     return (
       <View>
-        {navigation.navigate('DashBoard',{ userData: user.userData, idValue:user.sesion.uid })}
+        {navigation.navigate('DashBoard', {
+          userData: user.userData,
+          idValue: user.sesion.uid
+        })}
       </View>
       // <ScrollView>
       //   <View style={{ alignItems: 'center', margin: 10 }}>
@@ -374,14 +449,11 @@ export function Version2() {
   function MyStack() {
     const Stack = createStackNavigator();
     return (
-      <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen
-
-          name='Inicio'
-          component={RutasVistas}
-        />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
+        <Stack.Screen name='Inicio' component={RutasVistas} />
 
         <Stack.Screen name='NuevoObjeto' component={NuevoObjetoScreen} />
         <Stack.Screen name='Objeto' component={ObjetoScreen} />
@@ -414,7 +486,6 @@ export function Version2() {
   return (
     <PaperProvider>
       <UserProvider value={user}>
-
         <NavigationContainer>
           <MyStack />
         </NavigationContainer>
