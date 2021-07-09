@@ -27,7 +27,7 @@ export const RegisterScreen = (props) => {
       return true;
     }
   }
-  function handleOnSubmit(e) {
+  function registroFirebase(e) {
     e.preventDefault();
     if (validation()) {
       auth

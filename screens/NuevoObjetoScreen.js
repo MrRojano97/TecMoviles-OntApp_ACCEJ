@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   Button,
@@ -17,6 +17,8 @@ import themeTextInput from '../styles/ThemeTextInput';
 import { abrirCamara, abrirGaleria } from '../components/MediaPicker';
 import { comenzarGrabacion , pararGrabacion} from '../components/AudioPicker';
 import {db, storage} from '../firebase';
+import MapChico from '../components/MapChico'
+import * as Location from 'expo-location';
 
 /**
  * Vista para crear un nuevo objeto en la aplicacion
@@ -38,8 +40,9 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
   const [descripcionObjeto, setdescripcionObjeto] = useState('');
   const [visible, setVisible] = React.useState(false);
   const {top,bottom} = useSafeAreaInsets()
-
+  const [coords, setCoords] = useState({})
   const {userData} = route.params;
+  console.log("Guardando objeto, userData: ",userData)
   const [urlImagen, seturlImagen] = useState(null);
   const [urlAudio, seturlAudio] = useState(null);
 
@@ -86,14 +89,26 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
           )
       );
   }
-  const subirAudioFirebase = async ( )=>{
+  const subirAudioFirebase = async (idDocumento)=>{
     const response = await fetch(uriAudio)
     const blob = await response.blob()
-    storage()
+    storage
     .ref()
-    .child(`AudioObjeto/${userData.uid}/${iddocumento}`)
+    .child(`AudioObjeto/${userData.uid}/${idDocumento}`)
     .put(blob)
-    .catch(console.log('Posible error'));
+    .catch(
+      db
+        .collection('Objetos')
+        .doc(idDocumento)
+        .set(
+          {
+            idObjeto: idDocumento,
+            // urlObjeto: `https://firebasestorage.googleapis.com/v0/b/ontapp-b3ef8.appspot.com/o/AudioObjeto%2F${userData.uid}%2F${idDocumento}?alt=media&token=fc82f026-eaaa-4d24-a05c-f530b3577384`
+            urlAudio: `https://firebasestorage.googleapis.com/v0/b/ontapp-b3ef8.appspot.com/o/AudioObjeto%2F${userData.uid}%2F${idDocumento}?alt=media&token=e6ae8ae5-f08c-41a3-9766-6b4c259c3ff2`
+          },
+          { merge: true }
+        )
+    );
   }
   const handleGrabar = async() => {
     const grabacion = await comenzarGrabacion()
@@ -114,15 +129,38 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
     setSegUnidad(0)
     setSegDecena(0)
   }
-  
+
+  _getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    
+    if (status !== 'granted') {
+      console.log('El permiso fue negado');
+    }
+
+    // this.setState({
+    //     errorMessage: 'El permiso fue negado'
+    // })
+    
+    const userLocation = await Location.getCurrentPositionAsync({});
+
+    //Obtengo las coordenadas del usuario
+    console.log("\nPosición actual del usuario");
+    console.log("Latitud: "+userLocation.coords.latitude);
+    console.log("Longitud: "+userLocation.coords.longitude);
+    return userLocation;
+
+  }
+
   const handleGuardar = () => {
+
     console.log(nombreObjeto)
     console.log(descripcionObjeto)
     db.collection('Objetos')
       .add({
         nombredeobjeto: nombreObjeto,
         descripciondeobjeto: descripcionObjeto,
-        idusuario: userData.uid
+        idusuario: userData.uid,
+        coordenadas:coords
       })
       .then((snapshot) => {
         const url =
@@ -132,7 +170,8 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
         db.collection('Objetos').doc(snapshot.id).set(
           {
             idObjeto: snapshot.id,
-            urlObjeto: url
+            urlObjeto: url,
+            // urlAudio:urlAudio
           },
           { merge: true }
         );
@@ -182,6 +221,13 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
   //   });
   //   setVisible(true);
   // }
+  useEffect(() => {
+    _getLocation().then((userLocation)=>{
+      const {latitude, longitude} = userLocation.coords
+      console.log(latitude," ", longitude)
+      setCoords({latitude, longitude})
+    })
+  }, [])
   return (
     <ScrollView style={{top:top}}>
       <View style={{
@@ -223,10 +269,15 @@ export const NuevoObjetoScreen = ({navigation,route}) => {
         </View>
         <View style={{marginBottom:10}}>
           <Text style={{fontSize:fontSizes.medium}}>Ubicación</Text>
-          <Image
+          <View style={{ height: 100, width: dimensions.width - 40, marginTop: 10 }}>
+            <MapChico />
+          </View>
+
+          
+          {/* <Image
             style={{ height: 100, width: dimensions.width - 40, marginTop: 10 }}
             source={require('../assets/map.jpg')}
-          />
+          /> */}
         </View>
         <Text style={{ fontSize: fontSizes.medium }}>Imagen Objeto</Text>
         <View style={{ flexDirection: 'row' }}>
