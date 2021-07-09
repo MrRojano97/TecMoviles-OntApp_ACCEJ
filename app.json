@@ -16,26 +16,15 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "example.expo.googlesignin",
+    
+    "android": {
+      
       "config": {
-        "googleSignIn": {
-          "reservedClientId": "<YOUR_REVERSED_IOS_CLIENT_ID>"
+        "googleMaps": {
+          "apiKey": "AIzaSyAIRT-WaLCtMrd6kq0yfET4lGV5N5crn3w"
         }
       },
-      "googleServicesFile": ""
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF",
-        "package": "example.expo.googlesignin",
-        "googleServicesFile": "./google-services.json"
-      },
-      "config": {
-          "googleMaps": { "apiKey": "AIzaSyAIRT-WaLCtMrd6kq0yfET4lGV5N5crn3w" }   
-      }
+      "package": "ontapp.ontappv1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
